@@ -28,7 +28,7 @@ O projeto busca ser uma aplicação de controle de academia, com foco em boas pr
 
 * **Davi Medeiros Dantas Soares**
 * **João Gabriel Lacerda de Oliveira**
-* **Maria Júlia Amaral**
+* **Maria Júlia Amaral Lacerda**
 * **Pedro Henrique de Almeida Araújo**
 * **Mikael Abdias de Lima Santos**
 
