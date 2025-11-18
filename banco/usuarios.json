@@ -1,0 +1,10 @@
+[
+    {
+        "nome": "Mikael",
+        "email": "mikael@gma.com",
+        "senha": "$2y$10$pc9ZOHs2R0AChMdTVWxEGOQg1Vt2bkEay.QL072mY6CcRg6XHxzUy",
+        "tipo": "aluno",
+        "dataCadastro": "2025-11-18 01:00:25",
+        "id": 1
+    }
+]
