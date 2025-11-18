@@ -1,61 +1,89 @@
 <?php
 require_once __DIR__ . '/db.php';
-require_once __DIR__ . '/app/service/UsuarioService.php';
 
-$usuarioService = new UsuarioService($conexao);
+$db = new BancoDeDados();
 $mensagem = "";
 
+// Quando o usuário envia o formulário
 if (isset($_POST['nome'])) {
+
     $nome = $_POST['nome'];
     $email = $_POST['email'];
     $senha = $_POST['senha'];
     $tipo = $_POST['tipo'];
 
-    $id = $usuarioService->criarUsuario($nome, $email, $senha, $tipo);
+    // Cria usuário básico
+    $id = $db->inserir("usuarios", [
+        "nome" => $nome,
+        "email" => $email,
+        "senha" => password_hash($senha, PASSWORD_DEFAULT),
+        "tipo" => $tipo,
+        "dataCadastro" => date("Y-m-d H:i:s")
+    ]);
 
-    if ($id) {
-        $mensagem = "Usuário criado com sucesso! ID = $id";
-    } else {
-        $mensagem = "Falha ao criar usuário. Preencha todos os campos!";
+    // Se for aluno, cria registro adicional
+    if ($tipo === "aluno") {
+        $db->inserir("alunos", [
+            "usuario_id" => $id,
+            "altura" => "",
+            "peso" => "",
+            "plano" => "",
+            "treinos" => []
+        ]);
     }
+
+    // Se for personal
+    if ($tipo === "personal") {
+        $db->inserir("personais", [
+            "usuario_id" => $id,
+            "acesso_treinos" => true
+        ]);
+    }
+
+    // Se for admin
+    if ($tipo === "admin") {
+        $db->inserir("admins", [
+            "usuario_id" => $id,
+            "acesso_total" => true
+        ]);
+    }
+
+    $mensagem = "Usuário cadastrado com sucesso!";
 }
 
-$usuarios = $usuarioService->listarUsuarios();
+// Lê usuários
+$usuarios = $db->ler("usuarios");
 ?>
-
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Academia - Usuários</title>
+    <title>Sistema</title>
 </head>
 <body>
     <h1>Cadastro de Usuário</h1>
 
-    <?php if ($mensagem != "") echo "<p>$mensagem</p>"; ?>
+    <p><?= $mensagem ?></p>
 
-    <form method="post" action="">
-        <label>Nome:</label><br>
-        <input type="text" name="nome"><br><br>
+    <form method="POST">
+        Nome: <input type="text" name="nome" required><br>
+        Email: <input type="email" name="email" required><br>
+        Senha: <input type="password" name="senha" required><br>
 
-        <label>Email:</label><br>
-        <input type="email" name="email"><br><br>
-
-        <label>Senha:</label><br>
-        <input type="text" name="senha"><br><br>
-
-        <label>Tipo de Usuário:</label><br>
+        Tipo:
         <select name="tipo">
-            <option value="admin">Admin</option>
             <option value="aluno">Aluno</option>
             <option value="personal">Personal</option>
-        </select><br><br>
+            <option value="admin">Admin</option>
+        </select>
+        <br><br>
 
-        <input type="submit" value="Cadastrar">
+        <button type="submit">Cadastrar</button>
     </form>
 
     <h2>Usuários Cadastrados</h2>
-    <table border="1" cellpadding="5" cellspacing="0">
+
+    <table border="1" cellpadding="5">
         <tr>
             <th>ID</th>
             <th>Nome</th>
@@ -68,7 +96,7 @@ $usuarios = $usuarioService->listarUsuarios();
             <td><?= $u['id'] ?></td>
             <td><?= $u['nome'] ?></td>
             <td><?= $u['email'] ?></td>
-            <td><?= $u['tipoUsuario'] ?></td>
+            <td><?= $u['tipo'] ?></td>
             <td><?= $u['dataCadastro'] ?></td>
         </tr>
         <?php endforeach; ?>
