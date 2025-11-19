@@ -28,5 +28,10 @@
         "usuario_id": 11,
         "acesso_treinos": true,
         "id": 6
+    },
+    {
+        "usuario_id": 13,
+        "acesso_treinos": true,
+        "id": 7
     }
 ]
