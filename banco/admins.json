@@ -1,0 +1,17 @@
+[
+    {
+        "usuario_id": 5,
+        "acesso_total": true,
+        "id": 1
+    },
+    {
+        "usuario_id": 8,
+        "acesso_total": true,
+        "id": 2
+    },
+    {
+        "usuario_id": 12,
+        "acesso_total": true,
+        "id": 3
+    }
+]

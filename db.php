@@ -5,10 +5,8 @@ class BancoDeDados {
     private $path;
 
     public function __construct() {
-        // Pasta onde ficarão os arquivos JSON
         $this->path = __DIR__ . "/banco/";
 
-        // Se a pasta não existir, cria automaticamente
         if (!is_dir($this->path)) {
             mkdir($this->path, 0777, true);
         }
@@ -19,7 +17,7 @@ class BancoDeDados {
         $arquivo = $this->path . $tabela . ".json";
 
         if (!file_exists($arquivo)) {
-            file_put_contents($arquivo, "[]"); // cria o JSON vazio
+            file_put_contents($arquivo, "[]");
         }
 
         return json_decode(file_get_contents($arquivo), true);
@@ -35,7 +33,6 @@ class BancoDeDados {
     public function inserir($tabela, $registro) {
         $dados = $this->ler($tabela);
 
-        // Gera ID automático
         $registro["id"] = count($dados) > 0 
             ? $dados[count($dados) - 1]["id"] + 1
             : 1;
@@ -68,7 +65,6 @@ class BancoDeDados {
             return $item["id"] != $id;
         });
 
-        // Reindexa o array (opcional, mas recomendado)
         $dados = array_values($dados);
 
         $this->salvar($tabela, $dados);

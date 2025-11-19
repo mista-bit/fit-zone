@@ -6,5 +6,21 @@
         "plano": "",
         "treinos": [],
         "id": 1
+    },
+    {
+        "usuario_id": 9,
+        "altura": "",
+        "peso": "",
+        "plano": "",
+        "treinos": [],
+        "id": 2
+    },
+    {
+        "usuario_id": 10,
+        "altura": "",
+        "peso": "",
+        "plano": "",
+        "treinos": [],
+        "id": 3
     }
 ]

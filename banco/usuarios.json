@@ -6,5 +6,93 @@
         "tipo": "aluno",
         "dataCadastro": "2025-11-18 01:00:25",
         "id": 1
+    },
+    {
+        "nome": "Sandra",
+        "email": "maria@maria",
+        "senha": "$2y$10$QPHnD2QTtHgWBeFfxUgRC.2\/T0d0TaeaIDkHNJ77gu9wtJBbAczue",
+        "tipo": "personal",
+        "dataCadastro": "2025-11-19 00:26:06",
+        "id": 2
+    },
+    {
+        "nome": "Sandra",
+        "email": "maria@maria",
+        "senha": "$2y$10$UZ45vR4QxGXS7XXToWLvn.yb0CX7ix03YB7JJBXusmvLlXPcSLkC.",
+        "tipo": "personal",
+        "dataCadastro": "2025-11-19 00:26:59",
+        "id": 3
+    },
+    {
+        "nome": "Sandra",
+        "email": "maria@maria",
+        "senha": "$2y$10$Y9uTJ6OveTp8.pae2jvO9.hJzkOedUwGYNWZly4U\/2fuRBvpz\/Eb2",
+        "tipo": "personal",
+        "dataCadastro": "2025-11-19 00:28:53",
+        "id": 4
+    },
+    {
+        "nome": "ana",
+        "email": "maria@maria",
+        "senha": "$2y$10$gDJGSkp4ou55c.VqnHigSOd6Z1rhfq7ocpygU959x7d.Hycsgcpme",
+        "tipo": "admin",
+        "dataCadastro": "2025-11-18 20:36:01",
+        "id": 5
+    },
+    {
+        "nome": "tia",
+        "email": "maria@maria",
+        "senha": "$2y$10$elk4ibhIixL2Y9Y4oV08\/.ZO.PBbqKtwqzPBeR.ev5nMsCn.lVdL6",
+        "tipo": "personal",
+        "dataCadastro": "2025-11-18 21:09:41",
+        "id": 6
+    },
+    {
+        "nome": "gabriel",
+        "email": "maria@maria",
+        "senha": "$2y$10$x78v\/DU8i9y2RvECv8VO1eLohWCpmW\/joi6dt73pxW5yMU4EWX7H.",
+        "tipo": "personal",
+        "dataCadastro": "2025-11-18 21:11:28",
+        "id": 7
+    },
+    {
+        "nome": "Sandra",
+        "email": "amariajulia204@gmail.com",
+        "senha": "$2y$10$B49JznBlh5E8r7YImR4WquDQMxR0jRW6yJMzJSMVVLWt\/DU0ORxG6",
+        "tipo": "admin",
+        "dataCadastro": "2025-11-18 21:30:02",
+        "id": 8
+    },
+    {
+        "nome": "gabriel",
+        "email": "amariajulia204@gmail.com",
+        "senha": "$2y$10$dZ35.yi7EDGJRrFUDPyeoO5fhx\/7N0Z3Szy19XnR8SvZ.S4vafMM2",
+        "tipo": "aluno",
+        "dataCadastro": "2025-11-18 21:35:03",
+        "id": 9
+    },
+    {
+        "nome": "gabriel",
+        "email": "maria@maria",
+        "senha": "$2y$10$1NVKseoQRRGHkZOItrDKVeIZTzYEg07t0cChnKATQAR.dlWhuf1Ru",
+        "tipo": "aluno",
+        "dataCadastro": "2025-11-18 21:35:27",
+        "id": 10
+    },
+    {
+        "nome": "maria juju",
+        "email": "juju@juju",
+        "senha": "$2y$10$0FfqgIcCjhqGENZxOxFB\/Omfk\/wt1Up2yyzgDxU\/.utyY.LTT.BVq",
+        "tipo": "personal",
+        "dataCadastro": "2025-11-18 21:39:27",
+        "id": 11
+    },
+    {
+        "nome": "nina",
+        "email": "nina@nina",
+        "senha": "$2y$10$CFlY\/n3QNbLhIYJU8URwvuhgQC06HQxHMeoyjgfaYlDeBwHOSoh7.",
+        "tipo": "admin",
+        "dataCadastro": "2025-11-18 21:40:04",
+        "id": 12
     }
 ]
