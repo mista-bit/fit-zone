@@ -32,5 +32,5 @@ O projeto busca ser uma aplicação de controle de academia, com foco em boas pr
 * **Pedro Henrique de Almeida Araújo**
 * **Mikael Abdias de Lima Santos**
 
-```Projeto de conclusão da disciplina **Programação Web (P2)**, ministrada pelo professor **Daniel Brandão**.```
+```Projeto de conclusão da disciplina Programação Web (P2), ministrada pelo professor Daniel Brandão.```
 
