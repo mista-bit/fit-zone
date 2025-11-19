@@ -1,0 +1,32 @@
+[
+    {
+        "usuario_id": 2,
+        "acesso_treinos": true,
+        "id": 1
+    },
+    {
+        "usuario_id": 3,
+        "acesso_treinos": true,
+        "id": 2
+    },
+    {
+        "usuario_id": 4,
+        "acesso_treinos": true,
+        "id": 3
+    },
+    {
+        "usuario_id": 6,
+        "acesso_treinos": true,
+        "id": 4
+    },
+    {
+        "usuario_id": 7,
+        "acesso_treinos": true,
+        "id": 5
+    },
+    {
+        "usuario_id": 11,
+        "acesso_treinos": true,
+        "id": 6
+    }
+]
