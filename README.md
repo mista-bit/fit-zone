@@ -8,7 +8,6 @@ O projeto busca ser uma aplicação de controle de academia, com foco em boas pr
 ## 🚀 Tecnologias
 
 * **PHP**
-* **MySQL**
 * **HTML / CSS / JavaScript**
 
 ---
