@@ -87,34 +87,22 @@ $paginaAtual = 'planos';
         </div>
 
         <div class="grid md:grid-cols-3 gap-6">
+
             <div class="bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl p-6 border border-white/20 hover:border-blue-500/50 transition-all">
                 <div class="text-center mb-6">
                     <h3 class="text-2xl font-bold text-white mb-2">Básico</h3>
                     <div class="text-4xl font-bold text-blue-400 mb-1">R$ 99<span class="text-lg text-gray-400">/mês</span></div>
                 </div>
                 <ul class="space-y-3 mb-6">
-                    <li class="flex items-center gap-2 text-gray-300">
-                        <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        Acesso à academia
-                    </li>
-                    <li class="flex items-center gap-2 text-gray-300">
-                        <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        Treinos básicos
-                    </li>
-                    <li class="flex items-center gap-2 text-gray-300">
-                        <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        Suporte por email
-                    </li>
+                    <li class="flex items-center gap-2 text-gray-300"><svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Acesso à academia</li>
+                    <li class="flex items-center gap-2 text-gray-300"><svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Treinos básicos</li>
+                    <li class="flex items-center gap-2 text-gray-300"><svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Suporte por email</li>
                 </ul>
-                <button class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg transition-all">
+
+                <a href="cadastro.php?plano=basico" 
+                   class="w-full block text-center bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg transition-all">
                     Escolher Plano
-                </button>
+                </a>
             </div>
 
             <div class="bg-gradient-to-br from-blue-500/20 to-purple-500/20 backdrop-blur-lg rounded-2xl shadow-2xl p-6 border-2 border-blue-500/50 hover:border-purple-500/50 transition-all transform scale-105">
@@ -123,35 +111,19 @@ $paginaAtual = 'planos';
                     <h3 class="text-2xl font-bold text-white mb-2">Premium</h3>
                     <div class="text-4xl font-bold text-purple-400 mb-1">R$ 149<span class="text-lg text-gray-400">/mês</span></div>
                 </div>
+
                 <ul class="space-y-3 mb-6">
-                    <li class="flex items-center gap-2 text-gray-300">
-                        <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        Tudo do plano Básico
-                    </li>
-                    <li class="flex items-center gap-2 text-gray-300">
-                        <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        Personal Trainer
-                    </li>
-                    <li class="flex items-center gap-2 text-gray-300">
-                        <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        Acompanhamento nutricional
-                    </li>
-                    <li class="flex items-center gap-2 text-gray-300">
-                        <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        Suporte 24/7
-                    </li>
+                    <li class="flex items-center gap-2 text-gray-300"><svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Tudo do plano Básico</li>
+                    <li class="flex items-center gap-2 text-gray-300"><svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Personal Trainer</li>
+                    <li class="flex items-center gap-2 text-gray-300"><svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Acompanhamento nutricional</li>
+                    <li class="flex items-center gap-2 text-gray-300"><svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Suporte 24/7</li>
                 </ul>
-                <button class="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold py-2 px-6 rounded-lg transition-all">
+
+                <a href="cadastro.php?plano=premium" 
+                   class="w-full block text-center bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 
+                          text-white font-semibold py-2 px-6 rounded-lg transition-all">
                     Escolher Plano
-                </button>
+                </a>
             </div>
 
             <div class="bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl p-6 border border-white/20 hover:border-purple-500/50 transition-all">
@@ -159,38 +131,21 @@ $paginaAtual = 'planos';
                     <h3 class="text-2xl font-bold text-white mb-2">VIP</h3>
                     <div class="text-4xl font-bold text-purple-400 mb-1">R$ 249<span class="text-lg text-gray-400">/mês</span></div>
                 </div>
+
                 <ul class="space-y-3 mb-6">
-                    <li class="flex items-center gap-2 text-gray-300">
-                        <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        Tudo do plano Premium
-                    </li>
-                    <li class="flex items-center gap-2 text-gray-300">
-                        <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        Personal Trainer exclusivo
-                    </li>
-                    <li class="flex items-center gap-2 text-gray-300">
-                        <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        Acesso a todas as áreas
-                    </li>
-                    <li class="flex items-center gap-2 text-gray-300">
-                        <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        Consultoria premium
-                    </li>
+                    <li class="flex items-center gap-2 text-gray-300"><svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Tudo do plano Premium</li>
+                    <li class="flex items-center gap-2 text-gray-300"><svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Personal Trainer exclusivo</li>
+                    <li class="flex items-center gap-2 text-gray-300"><svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Acesso a todas as áreas</li>
+                    <li class="flex items-center gap-2 text-gray-300"><svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Consultoria premium</li>
                 </ul>
-                <button class="w-full bg-purple-500 hover:bg-purple-600 text-white font-semibold py-2 px-6 rounded-lg transition-all">
+
+                <a href="cadastro.php?plano=vip" 
+                   class="w-full block text-center bg-purple-500 hover:bg-purple-600 text-white font-semibold py-2 px-6 rounded-lg transition-all">
                     Escolher Plano
-                </button>
+                </a>
             </div>
+
         </div>
     </div>
 </body>
 </html>
-

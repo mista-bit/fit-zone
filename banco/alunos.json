@@ -22,5 +22,21 @@
         "plano": "",
         "treinos": [],
         "id": 3
+    },
+    {
+        "usuario_id": 15,
+        "altura": "",
+        "peso": "",
+        "plano": "vip",
+        "treinos": [],
+        "id": 4
+    },
+    {
+        "usuario_id": 16,
+        "altura": "12",
+        "peso": "12",
+        "plano": "vip",
+        "treinos": "[]",
+        "id": 5
     }
 ]

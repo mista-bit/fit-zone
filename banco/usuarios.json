@@ -94,5 +94,37 @@
         "tipo": "admin",
         "dataCadastro": "2025-11-18 21:40:04",
         "id": 12
+    },
+    {
+        "nome": "testedia19",
+        "email": "testedia19@g.com",
+        "senha": "$2y$10$Xcmulm167k6JxxBS7IoIAeQReM2O\/Qi7gRx1DI07TTv0mVzKFS1wa",
+        "tipo": "personal",
+        "dataCadastro": "2025-11-19 09:35:21",
+        "id": 13
+    },
+    {
+        "nome": "dsds",
+        "email": "davi@teste.com",
+        "senha": "$2y$10$IofjnDwg59eDzZorhOvKIOpHTAOWzYeWgfVwwOR\/fuSPamIZSQMui",
+        "tipo": "admin",
+        "dataCadastro": "2025-11-19 09:36:40",
+        "id": 14
+    },
+    {
+        "nome": "dsds",
+        "email": "testedia19@g.com",
+        "senha": "$2y$10$YIB5.yDjE7Ll9R8ffMrSJucwtjiHpvNF3ElqZlJR\/WaRigj95hsxC",
+        "tipo": "aluno",
+        "dataCadastro": "2025-11-19 09:42:46",
+        "id": 15
+    },
+    {
+        "nome": "teste",
+        "email": "testedia19@g.com",
+        "senha": "$2y$10$cdDPlCL2oYwZco9yjHOW1O6oINKHf\/WFb.hJBCE2\/myFddZTvzbXO",
+        "tipo": "aluno",
+        "dataCadastro": "2025-11-19 09:48:52",
+        "id": 16
     }
 ]
