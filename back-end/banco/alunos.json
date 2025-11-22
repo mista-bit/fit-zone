@@ -1,0 +1,18 @@
+[
+    {
+        "usuario_id": 1,
+        "altura": "1.70",
+        "peso": "53",
+        "plano": "basico",
+        "treinos": "[]",
+        "id": 1
+    },
+    {
+        "usuario_id": 2,
+        "altura": "1.70",
+        "peso": "53",
+        "plano": "basico",
+        "treinos": "[]",
+        "id": 2
+    }
+]

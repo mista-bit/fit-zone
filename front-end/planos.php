@@ -2,7 +2,7 @@
 date_default_timezone_set('America/Sao_Paulo');
 session_start();
 
-require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/../back-end/db.php';
 
 $db = new BancoDeDados();
 $paginaAtual = 'planos';
@@ -55,16 +55,16 @@ $paginaAtual = 'planos';
                     <span class="text-gray-300 text-sm">
                         Olá, <span class="text-purple-400 font-semibold"><?= htmlspecialchars($_SESSION['usuario_nome']) ?></span>
                     </span>
-                    <a href="logout.php" 
+                    <a href="../back-end/logout.php" 
                        class="text-gray-300 hover:text-white transition-colors">
                         Sair
                     </a>
                     <?php else: ?>
-                    <a href="login.php" 
+                    <a href="../back-end/login.php" 
                        class="text-gray-300 hover:text-white transition-colors">
                         Login
                     </a>
-                    <a href="cadastro.php" 
+                    <a href="../back-end/cadastro.php" 
                        class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 
                               text-white font-semibold px-6 py-2 rounded-lg transition-all duration-200 
                               transform hover:scale-105 shadow-lg">
@@ -99,7 +99,7 @@ $paginaAtual = 'planos';
                     <li class="flex items-center gap-2 text-gray-300"><svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Suporte por email</li>
                 </ul>
 
-                <a href="cadastro.php?plano=basico" 
+                <a href="../back-end/cadastro.php?plano=basico" 
                    class="w-full block text-center bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg transition-all">
                     Escolher Plano
                 </a>
@@ -119,7 +119,7 @@ $paginaAtual = 'planos';
                     <li class="flex items-center gap-2 text-gray-300"><svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Suporte 24/7</li>
                 </ul>
 
-                <a href="cadastro.php?plano=premium" 
+                <a href="../back-end/cadastro.php?plano=premium" 
                    class="w-full block text-center bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 
                           text-white font-semibold py-2 px-6 rounded-lg transition-all">
                     Escolher Plano
@@ -139,7 +139,7 @@ $paginaAtual = 'planos';
                     <li class="flex items-center gap-2 text-gray-300"><svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Consultoria premium</li>
                 </ul>
 
-                <a href="cadastro.php?plano=vip" 
+                <a href="../back-end/cadastro.php?plano=vip" 
                    class="w-full block text-center bg-purple-500 hover:bg-purple-600 text-white font-semibold py-2 px-6 rounded-lg transition-all">
                     Escolher Plano
                 </a>
