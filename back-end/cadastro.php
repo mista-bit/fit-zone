@@ -53,7 +53,7 @@ if (isset($_POST['nome'])) {
     }
 
     $_SESSION['mensagem_sucesso'] = "Usuário cadastrado com sucesso!";
-    header("Location: index.php");
+    header("Location: ../front-end/index.php");
     exit();
 }
 
@@ -90,16 +90,16 @@ $paginaAtual = 'cadastro';
                 </a>
 
                 <div class="flex items-center gap-6">
-                    <a href="index.php" class="text-gray-300 hover:text-white transition-colors">Home</a>
-                    <a href="planos.php" class="text-gray-300 hover:text-white transition-colors">Planos</a>
+                    <a href="../front-end/index.php" class="text-gray-300 hover:text-white transition-colors">Home</a>
+                    <a href="../front-end/planos.php" class="text-gray-300 hover:text-white transition-colors">Planos</a>
 
                     <?php if (isset($_SESSION['usuario_tipo']) && $_SESSION['usuario_tipo'] === 'admin'): ?>
-                        <a href="clientes.php" class="text-gray-300 hover:text-white">Clientes</a>
+                        <a href="../front-end/clientes.php" class="text-gray-300 hover:text-white">Clientes</a>
                     <?php endif; ?>
 
                     <?php if (isset($_SESSION['usuario_id'])): ?>
                         <?php if ($_SESSION['usuario_tipo'] !== 'admin'): ?>
-                            <a href="area-cliente.php" class="text-gray-300 hover:text-white">Minha Área</a>
+                            <a href="../front-end/area-cliente.php" class="text-gray-300 hover:text-white">Minha Área</a>
                         <?php endif; ?>
 
                         <span class="text-gray-300 text-sm">

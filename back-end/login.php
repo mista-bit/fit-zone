@@ -30,9 +30,9 @@ if (isset($_POST['email']) && isset($_POST['senha'])) {
         $_SESSION['usuario_tipo'] = $usuarioEncontrado['tipo'];
         
         if ($usuarioEncontrado['tipo'] === 'admin') {
-            header("Location: clientes.php");
+            header("Location:../front-end/clientes.php");
         } else {
-            header("Location: area-cliente.php");
+            header("Location: ../front-end/area-cliente.php");
         }
         exit();
     } else {
@@ -42,9 +42,9 @@ if (isset($_POST['email']) && isset($_POST['senha'])) {
 
 if (isset($_SESSION['usuario_id'])) {
     if (isset($_SESSION['usuario_tipo']) && $_SESSION['usuario_tipo'] === 'admin') {
-        header("Location: clientes.php");
+        header("Location: ../front-end/clientes.php");
     } else {
-        header("Location: area-cliente.php");
+        header("Location: ../front-end/area-cliente.php");
     }
     exit();
 }
@@ -75,16 +75,20 @@ $paginaAtual = 'login';
                     </span>
                 </a>
                 <div class="flex items-center gap-6">
-                    <a href="index.php" 
+                    <a href="../front-end/index.php" 
                        class="text-gray-300 hover:text-white transition-colors">
                         Home
                     </a>
-                    <a href="planos.php" 
+                    <a href="../front-end/planos.php" 
                        class="text-gray-300 hover:text-white transition-colors">
                         Planos
                     </a>
+                     <a href="login.php" 
+                       class="text-gray-300 hover:text-white transition-colors <?= $paginaAtual === 'login' ? 'text-white font-semibold' : '' ?>">
+                        Login
+                    </a>
                     <?php if (isset($_SESSION['usuario_tipo']) && $_SESSION['usuario_tipo'] === 'admin'): ?>
-                    <a href="clientes.php" 
+                    <a href="../front-end/clientes.php" 
                        class="text-gray-300 hover:text-white transition-colors">
                         Clientes
                     </a>

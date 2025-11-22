@@ -2,7 +2,7 @@
 date_default_timezone_set('America/Sao_Paulo');
 session_start();
 
-require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/../back-end//db.php';
 
 $db = new BancoDeDados();
 
@@ -77,16 +77,16 @@ $paginaAtual = 'area-cliente';
                     <span class="text-gray-300 text-sm">
                         Olá, <span class="text-purple-400 font-semibold"><?= htmlspecialchars($_SESSION['usuario_nome']) ?></span>
                     </span>
-                    <a href="logout.php" 
+                    <a href="../back-end/logout.php" 
                        class="text-gray-300 hover:text-white transition-colors">
                         Sair
                     </a>
                     <?php else: ?>
-                    <a href="login.php" 
+                    <a href="../back-end/login.php" 
                        class="text-gray-300 hover:text-white transition-colors">
                         Login
                     </a>
-                    <a href="cadastro.php" 
+                    <a href="../back-end/cadastro.php" 
                        class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 
                               text-white font-semibold px-6 py-2 rounded-lg transition-all duration-200 
                               transform hover:scale-105 shadow-lg">
