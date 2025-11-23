@@ -26,18 +26,12 @@ O projeto foi concebido com o objetivo de fornecer uma solução robusta e intui
   
 ---
 
-## 💻 Uso e Interface
+## 💻 Uso
 
 A plataforma FitZone apresenta uma arquitetura de interface intuitiva e bem estruturada, projetada para atender aos diferentes perfis de usuários:
 
-**Página Inicial:** A tela de entrada oferece uma visão geral da proposta de valor da academia, destacando os principais benefícios e diferenciais. Nela, os usuários encontram navegação clara para acessar informações sobre planos disponíveis, além de pontos de entrada para registro de novos alunos e profissionais.
-
-**Autenticação e Acesso:** O sistema implementa um mecanismo robusto de login que valida credenciais de usuário e direciona cada perfil para seu respectivo painel de controle, garantindo segurança e personalização da experiência.
-
-**Painel do Aluno:** Alunos autenticados acessam seu dashboard personalizado onde podem visualizar, acompanhar e gerenciar seus planos de treinamento, histórico de exercícios e informações de seu personal trainer designado.
-
-**Painel do Personal Trainer:** Profissionais qualificados utilizam a plataforma para criar, atualizar e acompanhar treinos personalizados de seus alunos, permitindo acompanhamento eficiente do progresso e ajustes de programação conforme necessário.
-
+**cadastro de alunos:** criar, listar e remover alunos.
+**cadastro de personais:** criar, listar e remover personal trainers.
 
 ---
 
