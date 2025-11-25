@@ -2,7 +2,6 @@
 
 **FitZone** é uma plataforma completa de gestão de academias desenvolvida para centralizar e otimizar a administração de usuários, planos de treinamento, treinos personalizados e profissionais qualificados. 
 
-O projeto foi concebido com o objetivo de fornecer uma solução robusta e intuitiva para controle operacional de estabelecimentos de educação física, priorizando boas práticas de desenvolvimento, arquitetura de dados bem estruturada e segurança de informações. A aplicação integra funcionalidades essenciais para academias modernas, desde autenticação de usuários até gerenciamento de relacionamentos entre alunos, personais trainers e administradores.
 
 ---
 
