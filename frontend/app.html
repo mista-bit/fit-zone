@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitZone - Sistema de Academia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-700 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-7xl">
+        <header class="text-center mb-10">
+            <h1 class="text-5xl md:text-6xl font-bold text-white mb-3 drop-shadow-lg">FitZone</h1>
+            <p class="text-purple-100 text-lg">Sistema de Gestão de Academia</p>
+        </header>
+
+        <div id="message" class="hidden mb-6"></div>
+
+        <div class="bg-white rounded-2xl shadow-2xl p-6 md:p-8 mb-8">
+            <div class="mb-6">
+                <h2 id="formTitle" class="text-2xl md:text-3xl font-bold text-gray-800">Criar Novo Usuário</h2>
+            </div>
+
+            <form id="userForm" class="space-y-5">
+                <input type="hidden" id="userId">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Nome Completo *</label>
+                        <input type="text" id="name" required
+                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all outline-none"
+                            placeholder="Digite o nome completo">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">E-mail *</label>
+                        <input type="email" id="email" required
+                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all outline-none"
+                            placeholder="exemplo@email.com">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Tipo de Usuário *</label>
+                    <select id="type"
+                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all outline-none bg-white">
+                        <option value="aluno">Aluno</option>
+                        <option value="personal">Personal Trainer</option>
+                    </select>
+                </div>
+
+                <div id="treinoGroup" class="transition-all duration-300">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Treino (separar por vírgulas)</label>
+                    <input type="text" id="treino"
+                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all outline-none"
+                        placeholder="Supino, Agachamento, Corrida, Leg Press">
+                    <p class="text-xs text-gray-500 mt-2">Separe os exercícios por vírgula</p>
+                </div>
+
+                <div class="flex gap-3 pt-2">
+                    <button type="submit" id="submitBtn"
+                        class="flex-1 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold py-3 px-6 rounded-xl hover:from-purple-700 hover:to-indigo-700 transform hover:scale-[1.02] transition duration-200 shadow-lg hover:shadow-xl">
+                        Criar
+                    </button>
+                    <button type="button" id="cancelBtn" onclick="cancelarEdicao()"
+                        class="hidden bg-gray-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-gray-600 transform hover:scale-[1.02] transition duration-200 shadow-lg">
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-2xl p-6 md:p-8">
+            <div class="mb-6">
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">Usuários Cadastrados</h2>
+                <p class="text-gray-600 font-medium">
+                    Total: <span id="userCount" class="font-bold text-purple-600">0</span> usuários
+                </p>
+            </div>
+
+            <div id="loading" class="text-center py-12">
+                <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+                <p class="mt-4 text-gray-600 font-medium">Carregando usuários...</p>
+            </div>
+
+            <div id="usersList"></div>
+        </div>
+    </div>
+
+    <script>
+        let idEditando = null;
+        let usuarios = [];
+
+        window.onload = () => {
+            carregarUsuarios();
+            document.getElementById('type').addEventListener('change', function() {
+                const treinoGroup = document.getElementById('treinoGroup');
+                treinoGroup.classList.toggle('hidden', this.value !== 'aluno');
+            });
+        };
+
+        function carregarUsuarios() {
+            try {
+                document.getElementById('loading').classList.remove('hidden');
+                const armazenado = localStorage.getItem('fitzone_usuarios');
+                usuarios = armazenado ? JSON.parse(armazenado) : [];
+                exibirUsuarios(usuarios);
+            } catch (erro) {
+                mostrarMensagem('Erro ao carregar usuários: ' + erro.message, 'erro');
+            } finally {
+                document.getElementById('loading').classList.add('hidden');
+            }
+        }
+
+        function salvarUsuarios() {
+            localStorage.setItem('fitzone_usuarios', JSON.stringify(usuarios));
+        }
+
+        function exibirUsuarios(listaUsuarios) {
+            const container = document.getElementById('usersList');
+            document.getElementById('userCount').textContent = listaUsuarios.length;
+
+            if (listaUsuarios.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-16">
+                        <p class="text-gray-600 text-lg font-medium mb-2">Nenhum usuário cadastrado</p>
+                        <p class="text-gray-500 text-sm">Crie o primeiro usuário usando o formulário acima</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = `
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">ID</th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Nome</th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">E-mail</th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Tipo</th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Treino</th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+            `;
+
+            listaUsuarios.forEach(usuario => {
+                const treinoTexto = usuario.treino && usuario.treino.length > 0 
+                    ? usuario.treino.join(', ') 
+                    : '<span class="text-gray-400 italic">-</span>';
+
+                html += `
+                    <tr class="hover:bg-purple-50/50 transition-colors">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="text-sm font-semibold text-gray-900">#${usuario.id}</span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-medium text-gray-900">${usuario.name}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-600">${usuario.email}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
+                                usuario.type === 'aluno' 
+                                    ? 'bg-blue-100 text-blue-700 border border-blue-200' 
+                                    : 'bg-orange-100 text-orange-700 border border-orange-200'
+                            }">
+                                ${usuario.type === 'aluno' ? 'Aluno' : 'Personal Trainer'}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="text-sm text-gray-700 max-w-xs">${treinoTexto}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                            <div class="flex gap-2">
+                                <button onclick="editarUsuario(${usuario.id})"
+                                    class="bg-cyan-500 hover:bg-cyan-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200 transform hover:scale-[1.05] shadow-md hover:shadow-lg">
+                                    Editar
+                                </button>
+                                <button onclick="removerUsuario(${usuario.id})"
+                                    class="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200 transform hover:scale-[1.05] shadow-md hover:shadow-lg">
+                                    Remover
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += '</tbody></table></div>';
+            container.innerHTML = html;
+        }
+
+        document.getElementById('userForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const dadosUsuario = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                type: document.getElementById('type').value
+            };
+
+            if (dadosUsuario.type === 'aluno' && document.getElementById('treino').value) {
+                const treinoStr = document.getElementById('treino').value;
+                dadosUsuario.treino = treinoStr.split(',').map(t => t.trim()).filter(t => t);
+            } else {
+                dadosUsuario.treino = [];
+            }
+
+            try {
+                if (idEditando) {
+                    const indice = usuarios.findIndex(u => u.id === idEditando);
+                    if (indice !== -1) {
+                        usuarios[indice] = { ...usuarios[indice], ...dadosUsuario };
+                        salvarUsuarios();
+                        mostrarMensagem('Usuário atualizado com sucesso!', 'sucesso');
+                    }
+                } else {
+                    const novoId = usuarios.length > 0 ? Math.max(...usuarios.map(u => u.id)) + 1 : 1;
+                    usuarios.push({ id: novoId, ...dadosUsuario });
+                    salvarUsuarios();
+                    mostrarMensagem('Usuário criado com sucesso!', 'sucesso');
+                }
+                
+                resetarFormulario();
+                carregarUsuarios();
+            } catch (erro) {
+                mostrarMensagem('Erro: ' + erro.message, 'erro');
+            }
+        });
+
+        function editarUsuario(id) {
+            try {
+                const usuario = usuarios.find(u => u.id === id);
+                if (!usuario) {
+                    mostrarMensagem('Usuário não encontrado', 'erro');
+                    return;
+                }
+
+                document.getElementById('userId').value = usuario.id;
+                document.getElementById('name').value = usuario.name;
+                document.getElementById('email').value = usuario.email;
+                document.getElementById('type').value = usuario.type;
+                document.getElementById('treino').value = usuario.treino ? usuario.treino.join(', ') : '';
+                
+                const treinoGroup = document.getElementById('treinoGroup');
+                treinoGroup.classList.toggle('hidden', usuario.type !== 'aluno');
+
+                idEditando = id;
+                document.getElementById('formTitle').textContent = 'Editar Usuário';
+                document.getElementById('submitBtn').textContent = 'Atualizar';
+                document.getElementById('cancelBtn').classList.remove('hidden');
+
+                document.querySelector('.bg-white.rounded-2xl').scrollIntoView({ behavior: 'smooth' });
+            } catch (erro) {
+                mostrarMensagem('Erro: ' + erro.message, 'erro');
+            }
+        }
+
+        function cancelarEdicao() {
+            resetarFormulario();
+        }
+
+        function resetarFormulario() {
+            document.getElementById('userForm').reset();
+            idEditando = null;
+            document.getElementById('formTitle').textContent = 'Criar Novo Usuário';
+            document.getElementById('submitBtn').textContent = 'Criar';
+            document.getElementById('cancelBtn').classList.add('hidden');
+            document.getElementById('treinoGroup').classList.remove('hidden');
+        }
+
+        function removerUsuario(id) {
+            if (!confirm('Tem certeza que deseja remover este usuário?\n\nEsta ação não pode ser desfeita.')) {
+                return;
+            }
+
+            try {
+                usuarios = usuarios.filter(u => u.id !== id);
+                salvarUsuarios();
+                mostrarMensagem('Usuário removido com sucesso!', 'sucesso');
+                carregarUsuarios();
+            } catch (erro) {
+                mostrarMensagem('Erro: ' + erro.message, 'erro');
+            }
+        }
+
+        function mostrarMensagem(texto, tipo) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.className = tipo === 'sucesso' 
+                ? 'bg-green-50 border-l-4 border-green-500 text-green-800 p-4 rounded-lg mb-6 shadow-lg font-medium'
+                : 'bg-red-50 border-l-4 border-red-500 text-red-800 p-4 rounded-lg mb-6 shadow-lg font-medium';
+            messageDiv.textContent = texto;
+            messageDiv.classList.remove('hidden');
+
+            setTimeout(() => {
+                messageDiv.classList.add('hidden');
+            }, 4000);
+        }
+    </script>
+</body>
+</html>
