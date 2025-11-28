@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitZone - Inscreva-se</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-950 text-white min-h-screen">
+    <nav class="bg-gray-950/95 backdrop-blur-md border-b border-gray-800/30">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-dumbbell text-white text-sm"></i>
+                    </div>
+                    <span class="text-xl font-semibold">FITZONE</span>
+                </div>
+                <a href="index.html" class="text-gray-400 hover:text-white transition text-sm font-medium flex items-center space-x-2">
+                    <i class="fas fa-arrow-left text-xs"></i>
+                    <span>Voltar</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 py-12 max-w-2xl">
+        <div id="message" class="hidden mb-6"></div>
+
+        <div class="text-center mb-10">
+            <h1 class="text-5xl font-bold mb-3 text-gray-100">
+                <span class="text-blue-500">Inscreva-se</span> Agora
+            </h1>
+            <p class="text-gray-400 text-lg">Preencha o formulário e comece sua jornada na FitZone</p>
+        </div>
+
+        <div class="bg-gray-900/30 rounded-xl border border-gray-800/50 p-8 backdrop-blur-sm">
+            <form id="inscricaoForm" class="space-y-5">
+                <div class="grid grid-cols-2 gap-5">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Nome Completo *</label>
+                        <input type="text" id="name" required
+                            class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition outline-none text-gray-100 placeholder-gray-500"
+                            placeholder="Digite seu nome completo">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">E-mail *</label>
+                        <input type="email" id="email" required
+                            class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition outline-none text-gray-100 placeholder-gray-500"
+                            placeholder="seu@email.com">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Tipo de Inscrição *</label>
+                    <select id="type" required
+                        class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition outline-none text-gray-100">
+                        <option value="aluno">Aluno</option>
+                        <option value="personal">Personal Trainer</option>
+                    </select>
+                </div>
+
+                <div id="treinoGroup" class="transition-all duration-300">
+                    <label class="block text-sm font-medium text-gray-300 mb-4">
+                        <i class="fas fa-dumbbell mr-2 text-blue-500"></i>Selecione os Exercícios do Treino *
+                    </label>
+                    <div class="bg-gradient-to-br from-gray-800/60 to-gray-900/60 rounded-xl p-6 border border-gray-700/30 max-h-[500px] overflow-y-auto shadow-xl scrollbar-thin scrollbar-thumb-blue-600 scrollbar-track-gray-800">
+                        <div class="mb-8">
+                            <div class="sticky top-0 z-10 bg-blue-500/10 backdrop-blur-sm rounded-lg p-3 mb-4 border-l-4 border-blue-500">
+                                <h4 class="text-base font-bold text-blue-400 flex items-center">
+                                    <i class="fas fa-dumbbell mr-2 text-lg"></i>Peito
+                                </h4>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <label class="flex items-center space-x-3 p-4 bg-gray-800/40 rounded-xl border border-gray-700/30 hover:border-blue-500/50 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer group transition-all duration-300">
+                                    <input type="checkbox" name="treino" value="Supino Reto" class="w-5 h-5 rounded border-2 border-gray-600 bg-gray-800 text-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-0 cursor-pointer transition-all duration-200 checked:bg-blue-600 checked:border-blue-600 hover:border-blue-500">
+                                    <span class="text-gray-300 text-sm group-hover:text-blue-400 transition-colors duration-200">Supino Reto</span>
+                                </label>
+                                <label class="flex items-center space-x-3 p-4 bg-gray-800/40 rounded-xl border border-gray-700/30 hover:border-blue-500/50 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer group transition-all duration-300">
+                                    <input type="checkbox" name="treino" value="Supino Inclinado" class="w-5 h-5 rounded border-2 border-gray-600 bg-gray-800 text-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-0 cursor-pointer transition-all duration-200 checked:bg-blue-600 checked:border-blue-600 hover:border-blue-500">
+                                    <span class="text-gray-300 text-sm group-hover:text-blue-400 transition-colors duration-200">Supino Inclinado</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mb-8">
+                            <div class="sticky top-0 z-10 bg-orange-500/10 backdrop-blur-sm rounded-lg p-3 mb-4 border-l-4 border-orange-500">
+                                <h4 class="text-base font-bold text-orange-400 flex items-center">
+                                    <i class="fas fa-running mr-2 text-lg"></i>Pernas
+                                </h4>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <label class="flex items-center space-x-3 p-4 bg-gray-800/40 rounded-xl border border-gray-700/30 hover:border-orange-500/50 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer group transition-all duration-300">
+                                    <input type="checkbox" name="treino" value="Agachamento" class="w-5 h-5 rounded border-2 border-gray-600 bg-gray-800 text-orange-600 focus:ring-2 focus:ring-orange-500 focus:ring-offset-0 cursor-pointer transition-all duration-200 checked:bg-orange-600 checked:border-orange-600 hover:border-orange-500">
+                                    <span class="text-gray-300 text-sm group-hover:text-orange-400 transition-colors duration-200">Agachamento</span>
+                                </label>
+                                <label class="flex items-center space-x-3 p-4 bg-gray-800/40 rounded-xl border border-gray-700/30 hover:border-orange-500/50 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer group transition-all duration-300">
+                                    <input type="checkbox" name="treino" value="Leg Press" class="w-5 h-5 rounded border-2 border-gray-600 bg-gray-800 text-orange-600 focus:ring-2 focus:ring-orange-500 focus:ring-offset-0 cursor-pointer transition-all duration-200 checked:bg-orange-600 checked:border-orange-600 hover:border-orange-500">
+                                    <span class="text-gray-300 text-sm group-hover:text-orange-400 transition-colors duration-200">Leg Press</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mb-8">
+                            <div class="sticky top-0 z-10 bg-red-500/10 backdrop-blur-sm rounded-lg p-3 mb-4 border-l-4 border-red-500">
+                                <h4 class="text-base font-bold text-red-400 flex items-center">
+                                    <i class="fas fa-heartbeat mr-2 text-lg"></i>Cardio
+                                </h4>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <label class="flex items-center space-x-3 p-4 bg-gray-800/40 rounded-xl border border-gray-700/30 hover:border-red-500/50 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer group transition-all duration-300">
+                                    <input type="checkbox" name="treino" value="Corrida" class="w-5 h-5 rounded border-2 border-gray-600 bg-gray-800 text-red-600 focus:ring-2 focus:ring-red-500 focus:ring-offset-0 cursor-pointer transition-all duration-200 checked:bg-red-600 checked:border-red-600 hover:border-red-500">
+                                    <span class="text-gray-300 text-sm group-hover:text-red-400 transition-colors duration-200">Corrida</span>
+                                </label>
+                                <label class="flex items-center space-x-3 p-4 bg-gray-800/40 rounded-xl border border-gray-700/30 hover:border-red-500/50 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer group transition-all duration-300">
+                                    <input type="checkbox" name="treino" value="Esteira" class="w-5 h-5 rounded border-2 border-gray-600 bg-gray-800 text-red-600 focus:ring-2 focus:ring-red-500 focus:ring-offset-0 cursor-pointer transition-all duration-200 checked:bg-red-600 checked:border-red-600 hover:border-red-500">
+                                    <span class="text-gray-300 text-sm group-hover:text-red-400 transition-colors duration-200">Esteira</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mb-8">
+                            <div class="sticky top-0 z-10 bg-purple-500/10 backdrop-blur-sm rounded-lg p-3 mb-4 border-l-4 border-purple-500">
+                                <h4 class="text-base font-bold text-purple-400 flex items-center">
+                                    <i class="fas fa-hand-paper mr-2 text-lg"></i>Braços
+                                </h4>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <label class="flex items-center space-x-3 p-4 bg-gray-800/40 rounded-xl border border-gray-700/30 hover:border-purple-500/50 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer group transition-all duration-300">
+                                    <input type="checkbox" name="treino" value="Rosca Direta" class="w-5 h-5 rounded border-2 border-gray-600 bg-gray-800 text-purple-600 focus:ring-2 focus:ring-purple-500 focus:ring-offset-0 cursor-pointer transition-all duration-200 checked:bg-purple-600 checked:border-purple-600 hover:border-purple-500">
+                                    <span class="text-gray-300 text-sm group-hover:text-purple-400 transition-colors duration-200">Rosca Direta</span>
+                                </label>
+                                <label class="flex items-center space-x-3 p-4 bg-gray-800/40 rounded-xl border border-gray-700/30 hover:border-purple-500/50 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer group transition-all duration-300">
+                                    <input type="checkbox" name="treino" value="Tríceps Pulley" class="w-5 h-5 rounded border-2 border-gray-600 bg-gray-800 text-purple-600 focus:ring-2 focus:ring-purple-500 focus:ring-offset-0 cursor-pointer transition-all duration-200 checked:bg-purple-600 checked:border-purple-600 hover:border-purple-500">
+                                    <span class="text-gray-300 text-sm group-hover:text-purple-400 transition-colors duration-200">Tríceps Pulley</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mb-8">
+                            <div class="sticky top-0 z-10 bg-green-500/10 backdrop-blur-sm rounded-lg p-3 mb-4 border-l-4 border-green-500">
+                                <h4 class="text-base font-bold text-green-400 flex items-center">
+                                    <i class="fas fa-user mr-2 text-lg"></i>Costas
+                                </h4>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <label class="flex items-center space-x-3 p-4 bg-gray-800/40 rounded-xl border border-gray-700/30 hover:border-green-500/50 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer group transition-all duration-300">
+                                    <input type="checkbox" name="treino" value="Remada Curvada" class="w-5 h-5 rounded border-2 border-gray-600 bg-gray-800 text-green-600 focus:ring-2 focus:ring-green-500 focus:ring-offset-0 cursor-pointer transition-all duration-200 checked:bg-green-600 checked:border-green-600 hover:border-green-500">
+                                    <span class="text-gray-300 text-sm group-hover:text-green-400 transition-colors duration-200">Remada Curvada</span>
+                                </label>
+                                <label class="flex items-center space-x-3 p-4 bg-gray-800/40 rounded-xl border border-gray-700/30 hover:border-green-500/50 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer group transition-all duration-300">
+                                    <input type="checkbox" name="treino" value="Puxada Frontal" class="w-5 h-5 rounded border-2 border-gray-600 bg-gray-800 text-green-600 focus:ring-2 focus:ring-green-500 focus:ring-offset-0 cursor-pointer transition-all duration-200 checked:bg-green-600 checked:border-green-600 hover:border-green-500">
+                                    <span class="text-gray-300 text-sm group-hover:text-green-400 transition-colors duration-200">Puxada Frontal</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mb-8">
+                            <div class="sticky top-0 z-10 bg-yellow-500/10 backdrop-blur-sm rounded-lg p-3 mb-4 border-l-4 border-yellow-500">
+                                <h4 class="text-base font-bold text-yellow-400 flex items-center">
+                                    <i class="fas fa-arrows-alt mr-2 text-lg"></i>Ombros
+                                </h4>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <label class="flex items-center space-x-3 p-4 bg-gray-800/40 rounded-xl border border-gray-700/30 hover:border-yellow-500/50 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer group transition-all duration-300">
+                                    <input type="checkbox" name="treino" value="Desenvolvimento" class="w-5 h-5 rounded border-2 border-gray-600 bg-gray-800 text-yellow-600 focus:ring-2 focus:ring-yellow-500 focus:ring-offset-0 cursor-pointer transition-all duration-200 checked:bg-yellow-600 checked:border-yellow-600 hover:border-yellow-500">
+                                    <span class="text-gray-300 text-sm group-hover:text-yellow-400 transition-colors duration-200">Desenvolvimento</span>
+                                </label>
+                                <label class="flex items-center space-x-3 p-4 bg-gray-800/40 rounded-xl border border-gray-700/30 hover:border-yellow-500/50 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer group transition-all duration-300">
+                                    <input type="checkbox" name="treino" value="Elevação Lateral" class="w-5 h-5 rounded border-2 border-gray-600 bg-gray-800 text-yellow-600 focus:ring-2 focus:ring-yellow-500 focus:ring-offset-0 cursor-pointer transition-all duration-200 checked:bg-yellow-600 checked:border-yellow-600 hover:border-yellow-500">
+                                    <span class="text-gray-300 text-sm group-hover:text-yellow-400 transition-colors duration-200">Elevação Lateral</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mb-8">
+                            <div class="sticky top-0 z-10 bg-cyan-500/10 backdrop-blur-sm rounded-lg p-3 mb-4 border-l-4 border-cyan-500">
+                                <h4 class="text-base font-bold text-cyan-400 flex items-center">
+                                    <i class="fas fa-fire mr-2 text-lg"></i>Core
+                                </h4>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <label class="flex items-center space-x-3 p-4 bg-gray-800/40 rounded-xl border border-gray-700/30 hover:border-cyan-500/50 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer group transition-all duration-300">
+                                    <input type="checkbox" name="treino" value="Abdominal" class="w-5 h-5 rounded border-2 border-gray-600 bg-gray-800 text-cyan-600 focus:ring-2 focus:ring-cyan-500 focus:ring-offset-0 cursor-pointer transition-all duration-200 checked:bg-cyan-600 checked:border-cyan-600 hover:border-cyan-500">
+                                    <span class="text-gray-300 text-sm group-hover:text-cyan-400 transition-colors duration-200">Abdominal</span>
+                                </label>
+                                <label class="flex items-center space-x-3 p-4 bg-gray-800/40 rounded-xl border border-gray-700/30 hover:border-cyan-500/50 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer group transition-all duration-300">
+                                    <input type="checkbox" name="treino" value="Prancha" class="w-5 h-5 rounded border-2 border-gray-600 bg-gray-800 text-cyan-600 focus:ring-2 focus:ring-cyan-500 focus:ring-offset-0 cursor-pointer transition-all duration-200 checked:bg-cyan-600 checked:border-cyan-600 hover:border-cyan-500">
+                                    <span class="text-gray-300 text-sm group-hover:text-cyan-400 transition-colors duration-200">Prancha</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-4 flex items-center">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        Marque os exercícios que deseja incluir no seu treino
+                    </p>
+                </div>
+
+                <button type="submit" 
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-6 rounded-lg transition transform hover:scale-105 text-lg">
+                    <i class="fas fa-check-circle mr-2"></i>Confirmar Inscrição
+                </button>
+            </form>
+        </div>
+
+        <div class="mt-8 text-center">
+            <p class="text-gray-500 text-sm">
+                Já é administrador? <a href="app.html" class="text-blue-500 hover:text-blue-400 transition">Acesse o Dashboard</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        let usuarios = [];
+
+        window.onload = function() {
+            try {
+                const armazenado = localStorage.getItem('fitzone_usuarios');
+                usuarios = armazenado ? JSON.parse(armazenado) : [];
+            } catch (erro) {
+                console.error('Erro ao carregar:', erro);
+            }
+
+            document.getElementById('type').addEventListener('change', function() {
+                const treinoGroup = document.getElementById('treinoGroup');
+                treinoGroup.classList.toggle('hidden', this.value !== 'aluno');
+            });
+
+            document.getElementById('inscricaoForm').addEventListener('submit', function(evento) {
+                evento.preventDefault();
+
+                const dadosUsuario = {
+                    name: document.getElementById('name').value.trim(),
+                    email: document.getElementById('email').value.trim(),
+                    type: document.getElementById('type').value
+                };
+
+                if (!dadosUsuario.name || !dadosUsuario.email) {
+                    mostrarMensagem('Por favor, preencha todos os campos obrigatórios.', 'erro');
+                    return;
+                }
+
+                if (dadosUsuario.type === 'aluno') {
+                    const checkboxesTreino = document.querySelectorAll('input[name="treino"]:checked');
+                    dadosUsuario.treino = Array.from(checkboxesTreino).map(function(cb) {
+                        return cb.value;
+                    });
+                } else {
+                    dadosUsuario.treino = [];
+                }
+
+                try {
+                    const novoId = usuarios.length > 0 ? Math.max.apply(null, usuarios.map(function(u) {
+                        return u.id;
+                    })) + 1 : 1;
+                    
+                    usuarios.push(Object.assign({ id: novoId }, dadosUsuario));
+                    localStorage.setItem('fitzone_usuarios', JSON.stringify(usuarios));
+                    
+                    mostrarMensagem('Inscrição realizada com sucesso! Em breve entraremos em contato.', 'sucesso');
+                    
+                    document.getElementById('inscricaoForm').reset();
+                    
+                    setTimeout(function() {
+                        window.location.href = 'index.html';
+                    }, 2000);
+                } catch (erro) {
+                    mostrarMensagem('Erro ao realizar inscrição: ' + erro.message, 'erro');
+                    console.error('Erro:', erro);
+                }
+            });
+        };
+
+        function mostrarMensagem(texto, tipo) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.className = tipo === 'sucesso' 
+                ? 'bg-green-500/20 border-l-4 border-green-500 text-green-400 p-4 rounded-lg mb-6 font-medium'
+                : 'bg-red-500/20 border-l-4 border-red-500 text-red-400 p-4 rounded-lg mb-6 font-medium';
+            messageDiv.textContent = texto;
+            messageDiv.classList.remove('hidden');
+
+            setTimeout(function() {
+                messageDiv.classList.add('hidden');
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
+

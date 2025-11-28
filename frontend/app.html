@@ -3,99 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FitZone - Sistema de Academia</title>
+    <title>FitZone - Dashboard Administrativo</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                    }
-                }
-            }
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'slide-down': 'slideDown 0.3s ease-out forwards',
+                    },
+                    keyframes: {
+                        slideDown: {
+                            'from': { opacity: '0', transform: 'translateY(-10px)' },
+                            'to': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                    },
+                },
+            },
         }
     </script>
     <style>
-        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+        * {
+            font-family: 'Inter', sans-serif;
+        }
     </style>
 </head>
-<body class="bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-700 min-h-screen">
+<body class="bg-gray-950 text-white min-h-screen">
+    <nav class="bg-gray-950/95 backdrop-blur-md border-b border-gray-800/30 sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-dumbbell text-white text-sm"></i>
+                    </div>
+                    <span class="text-xl font-semibold">FITZONE</span>
+                    <span class="text-xs text-gray-500 bg-gray-800 px-2 py-1 rounded">Admin</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="index.html" class="text-gray-400 hover:text-white transition text-sm font-medium flex items-center space-x-2">
+                        <i class="fas fa-home text-xs"></i>
+                        <span>Home</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
     <div class="container mx-auto px-4 py-8 max-w-7xl">
-        <header class="text-center mb-10">
-            <h1 class="text-5xl md:text-6xl font-bold text-white mb-3 drop-shadow-lg">FitZone</h1>
-            <p class="text-purple-100 text-lg">Sistema de Gestão de Academia</p>
-        </header>
+        <div class="mb-8">
+            <h1 class="text-4xl font-bold mb-2 text-gray-100">
+                <span class="text-blue-500">Dashboard</span> Administrativo
+            </h1>
+            <p class="text-gray-400">Visão geral e gestão de inscrições</p>
+        </div>
 
         <div id="message" class="hidden mb-6"></div>
 
-        <div class="bg-white rounded-2xl shadow-2xl p-6 md:p-8 mb-8">
-            <div class="mb-6">
-                <h2 id="formTitle" class="text-2xl md:text-3xl font-bold text-gray-800">Criar Novo Usuário</h2>
-            </div>
-
-            <form id="userForm" class="space-y-5">
-                <input type="hidden" id="userId">
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Nome Completo *</label>
-                        <input type="text" id="name" required
-                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all outline-none"
-                            placeholder="Digite o nome completo">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">E-mail *</label>
-                        <input type="email" id="email" required
-                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all outline-none"
-                            placeholder="exemplo@email.com">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Tipo de Usuário *</label>
-                    <select id="type"
-                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all outline-none bg-white">
-                        <option value="aluno">Aluno</option>
-                        <option value="personal">Personal Trainer</option>
-                    </select>
-                </div>
-
-                <div id="treinoGroup" class="transition-all duration-300">
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Treino (separar por vírgulas)</label>
-                    <input type="text" id="treino"
-                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all outline-none"
-                        placeholder="Supino, Agachamento, Corrida, Leg Press">
-                    <p class="text-xs text-gray-500 mt-2">Separe os exercícios por vírgula</p>
-                </div>
-
-                <div class="flex gap-3 pt-2">
-                    <button type="submit" id="submitBtn"
-                        class="flex-1 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold py-3 px-6 rounded-xl hover:from-purple-700 hover:to-indigo-700 transform hover:scale-[1.02] transition duration-200 shadow-lg hover:shadow-xl">
-                        Criar
-                    </button>
-                    <button type="button" id="cancelBtn" onclick="cancelarEdicao()"
-                        class="hidden bg-gray-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-gray-600 transform hover:scale-[1.02] transition duration-200 shadow-lg">
-                        Cancelar
-                    </button>
-                </div>
-            </form>
+        <div class="grid grid-cols-4 gap-6 mb-8" id="statsCards">
         </div>
 
-        <div class="bg-white rounded-2xl shadow-2xl p-6 md:p-8">
-            <div class="mb-6">
-                <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">Usuários Cadastrados</h2>
-                <p class="text-gray-600 font-medium">
-                    Total: <span id="userCount" class="font-bold text-purple-600">0</span> usuários
-                </p>
+        <div class="grid grid-cols-2 gap-6 mb-8">
+            <div class="bg-gray-900/30 rounded-xl border border-gray-800/50 p-6 backdrop-blur-sm">
+                <h3 class="text-lg font-semibold text-gray-100 mb-4">
+                    <i class="fas fa-chart-pie text-blue-500 mr-2"></i>Distribuição por Tipo
+                </h3>
+                <div id="chartDistribuicao" class="h-64 flex items-end justify-center space-x-4">
+                </div>
+            </div>
+
+            <div class="bg-gray-900/30 rounded-xl border border-gray-800/50 p-6 backdrop-blur-sm">
+                <h3 class="text-lg font-semibold text-gray-100 mb-4">
+                    <i class="fas fa-chart-bar text-orange-500 mr-2"></i>Alunos com Treino
+                </h3>
+                <div id="chartTreinos" class="h-64">
+                </div>
+            </div>
+        </div>
+
+
+        <div class="bg-gray-900/30 rounded-xl border border-gray-800/50 p-8 backdrop-blur-sm">
+            <div class="mb-6 pb-4 border-b border-gray-800/50">
+                <div class="flex flex-row items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-2xl font-semibold text-gray-100 mb-2">
+                            <span class="text-blue-500">Alunos</span> Inscritos
+                        </h2>
+                        <p class="text-gray-400 text-sm">
+                            Total: <span id="userCount" class="font-bold text-blue-500">0</span> inscrições
+                        </p>
+                    </div>
+                    <div class="flex gap-3">
+                        <input type="text" id="searchInput" placeholder="Buscar..." 
+                            class="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition outline-none text-gray-100 placeholder-gray-500 text-sm">
+                        <select id="filterType" class="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition outline-none text-gray-100 text-sm">
+                            <option value="todos">Todos</option>
+                            <option value="aluno">Alunos</option>
+                            <option value="personal">Personal Trainers</option>
+                        </select>
+                    </div>
+                </div>
             </div>
 
             <div id="loading" class="text-center py-12">
-                <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
-                <p class="mt-4 text-gray-600 font-medium">Carregando usuários...</p>
+                <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                <p class="mt-4 text-gray-400 font-medium">Carregando...</p>
             </div>
 
             <div id="usersList"></div>
@@ -103,15 +121,14 @@
     </div>
 
     <script>
-        let idEditando = null;
         let usuarios = [];
+        let usuariosFiltrados = [];
 
-        window.onload = () => {
+        window.onload = function() {
             carregarUsuarios();
-            document.getElementById('type').addEventListener('change', function() {
-                const treinoGroup = document.getElementById('treinoGroup');
-                treinoGroup.classList.toggle('hidden', this.value !== 'aluno');
-            });
+            
+            document.getElementById('searchInput').addEventListener('input', filtrarUsuarios);
+            document.getElementById('filterType').addEventListener('change', filtrarUsuarios);
         };
 
         function carregarUsuarios() {
@@ -119,7 +136,9 @@
                 document.getElementById('loading').classList.remove('hidden');
                 const armazenado = localStorage.getItem('fitzone_usuarios');
                 usuarios = armazenado ? JSON.parse(armazenado) : [];
-                exibirUsuarios(usuarios);
+                usuariosFiltrados = usuarios;
+                atualizarDashboard();
+                exibirUsuarios(usuariosFiltrados);
             } catch (erro) {
                 mostrarMensagem('Erro ao carregar usuários: ' + erro.message, 'erro');
             } finally {
@@ -131,6 +150,140 @@
             localStorage.setItem('fitzone_usuarios', JSON.stringify(usuarios));
         }
 
+        function atualizarDashboard() {
+            atualizarStatsCards();
+            atualizarGraficos();
+        }
+
+        function atualizarStatsCards() {
+            const total = usuarios.length;
+            const alunos = usuarios.filter(u => u.type === 'aluno').length;
+            const personal = usuarios.filter(u => u.type === 'personal').length;
+            const comTreino = usuarios.filter(u => u.treino && u.treino.length > 0).length;
+
+            const statsCards = document.getElementById('statsCards');
+            statsCards.innerHTML = `
+                <div class="bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl p-6 border border-blue-500/30">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-users text-white text-xl"></i>
+                        </div>
+                        <span class="text-blue-200 text-sm">Total</span>
+                    </div>
+                    <div class="text-3xl font-bold text-white mb-1">${total}</div>
+                    <div class="text-blue-200 text-sm">Inscrições</div>
+                </div>
+                
+                <div class="bg-gray-900/50 rounded-xl p-6 border border-gray-800/50">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-user-graduate text-blue-400 text-xl"></i>
+                        </div>
+                        <span class="text-gray-400 text-sm">Alunos</span>
+                    </div>
+                    <div class="text-3xl font-bold text-gray-100 mb-1">${alunos}</div>
+                    <div class="text-gray-400 text-sm">${total > 0 ? Math.round((alunos/total)*100) : 0}% do total</div>
+                </div>
+                
+                <div class="bg-gray-900/50 rounded-xl p-6 border border-gray-800/50">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-orange-500/20 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-user-tie text-orange-400 text-xl"></i>
+                        </div>
+                        <span class="text-gray-400 text-sm">Personal</span>
+                    </div>
+                    <div class="text-3xl font-bold text-gray-100 mb-1">${personal}</div>
+                    <div class="text-gray-400 text-sm">${total > 0 ? Math.round((personal/total)*100) : 0}% do total</div>
+                </div>
+                
+                <div class="bg-gray-900/50 rounded-xl p-6 border border-gray-800/50">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-dumbbell text-green-400 text-xl"></i>
+                        </div>
+                        <span class="text-gray-400 text-sm">Com Treino</span>
+                    </div>
+                    <div class="text-3xl font-bold text-gray-100 mb-1">${comTreino}</div>
+                    <div class="text-gray-400 text-sm">${alunos > 0 ? Math.round((comTreino/alunos)*100) : 0}% dos alunos</div>
+                </div>
+            `;
+        }
+
+        function atualizarGraficos() {
+            const alunos = usuarios.filter(u => u.type === 'aluno').length;
+            const personal = usuarios.filter(u => u.type === 'personal').length;
+            const total = usuarios.length;
+            
+            const chartDistribuicao = document.getElementById('chartDistribuicao');
+            if (total > 0) {
+                const alturaAluno = (alunos / total) * 100;
+                const alturaPersonal = (personal / total) * 100;
+                
+                chartDistribuicao.innerHTML = `
+                    <div class="flex flex-col items-center">
+                        <div class="bg-blue-500 rounded-t-lg mb-2 transition-all duration-500" style="width: 80px; height: ${alturaAluno}%; min-height: ${alturaAluno > 0 ? '20px' : '0'}"></div>
+                        <div class="text-xs text-gray-400">Alunos</div>
+                        <div class="text-sm font-bold text-blue-400 mt-1">${alunos}</div>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="bg-orange-500 rounded-t-lg mb-2 transition-all duration-500" style="width: 80px; height: ${alturaPersonal}%; min-height: ${alturaPersonal > 0 ? '20px' : '0'}"></div>
+                        <div class="text-xs text-gray-400">Personal</div>
+                        <div class="text-sm font-bold text-orange-400 mt-1">${personal}</div>
+                    </div>
+                `;
+            } else {
+                chartDistribuicao.innerHTML = '<p class="text-gray-500 text-center">Sem dados</p>';
+            }
+            
+            const comTreino = usuarios.filter(u => u.treino && u.treino.length > 0).length;
+            const semTreino = alunos - comTreino;
+            const chartTreinos = document.getElementById('chartTreinos');
+            
+            if (alunos > 0) {
+                const porcentagemComTreino = (comTreino / alunos) * 100;
+                const porcentagemSemTreino = (semTreino / alunos) * 100;
+                
+                chartTreinos.innerHTML = `
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-sm text-gray-400">Com Treino</span>
+                                <span class="text-sm font-bold text-green-400">${comTreino} (${Math.round(porcentagemComTreino)}%)</span>
+                            </div>
+                            <div class="w-full bg-gray-800 rounded-full h-3">
+                                <div class="bg-green-500 h-3 rounded-full transition-all duration-500" style="width: ${porcentagemComTreino}%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-sm text-gray-400">Sem Treino</span>
+                                <span class="text-sm font-bold text-gray-400">${semTreino} (${Math.round(porcentagemSemTreino)}%)</span>
+                            </div>
+                            <div class="w-full bg-gray-800 rounded-full h-3">
+                                <div class="bg-gray-600 h-3 rounded-full transition-all duration-500" style="width: ${porcentagemSemTreino}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                chartTreinos.innerHTML = '<p class="text-gray-500 text-center">Sem alunos cadastrados</p>';
+            }
+        }
+
+        function filtrarUsuarios() {
+            const busca = document.getElementById('searchInput').value.toLowerCase();
+            const filtroTipo = document.getElementById('filterType').value;
+            
+            usuariosFiltrados = usuarios.filter(function(usuario) {
+                const matchBusca = usuario.name.toLowerCase().includes(busca) || 
+                                 usuario.email.toLowerCase().includes(busca);
+                const matchTipo = filtroTipo === 'todos' || usuario.type === filtroTipo;
+                return matchBusca && matchTipo;
+            });
+            
+            exibirUsuarios(usuariosFiltrados);
+        }
+
         function exibirUsuarios(listaUsuarios) {
             const container = document.getElementById('usersList');
             document.getElementById('userCount').textContent = listaUsuarios.length;
@@ -138,8 +291,9 @@
             if (listaUsuarios.length === 0) {
                 container.innerHTML = `
                     <div class="text-center py-16">
-                        <p class="text-gray-600 text-lg font-medium mb-2">Nenhum usuário cadastrado</p>
-                        <p class="text-gray-500 text-sm">Crie o primeiro usuário usando o formulário acima</p>
+                        <i class="fas fa-search text-gray-600 text-5xl mb-4"></i>
+                        <p class="text-gray-400 text-lg font-medium mb-2">Nenhum resultado encontrado</p>
+                        <p class="text-gray-500 text-sm">Tente ajustar os filtros de busca</p>
                     </div>
                 `;
                 return;
@@ -148,56 +302,60 @@
             let html = `
                 <div class="overflow-x-auto">
                     <table class="w-full">
-                        <thead class="bg-gray-50">
+                        <thead class="bg-gray-800/30">
                             <tr>
-                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">ID</th>
-                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Nome</th>
-                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">E-mail</th>
-                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Tipo</th>
-                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Treino</th>
-                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Ações</th>
+                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider cursor-pointer hover:text-blue-400" onclick="ordenarPor('id')">
+                                    ID <i class="fas fa-sort ml-1"></i>
+                                </th>
+                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider cursor-pointer hover:text-blue-400" onclick="ordenarPor('name')">
+                                    Nome <i class="fas fa-sort ml-1"></i>
+                                </th>
+                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">E-mail</th>
+                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">Tipo</th>
+                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">Treino</th>
+                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">Ações</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
+                        <tbody class="bg-gray-900/20 divide-y divide-gray-800/50">
             `;
 
-            listaUsuarios.forEach(usuario => {
+            listaUsuarios.forEach(function(usuario) {
                 const treinoTexto = usuario.treino && usuario.treino.length > 0 
                     ? usuario.treino.join(', ') 
-                    : '<span class="text-gray-400 italic">-</span>';
+                    : '<span class="text-gray-500 italic">-</span>';
 
                 html += `
-                    <tr class="hover:bg-purple-50/50 transition-colors">
+                    <tr class="hover:bg-gray-800/20 transition-colors">
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="text-sm font-semibold text-gray-900">#${usuario.id}</span>
+                            <span class="text-sm font-medium text-gray-300">#${usuario.id}</span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm font-medium text-gray-900">${usuario.name}</div>
+                            <div class="text-sm font-medium text-gray-100">${usuario.name}</div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-600">${usuario.email}</div>
+                            <div class="text-sm text-gray-400">${usuario.email}</div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
                                 usuario.type === 'aluno' 
-                                    ? 'bg-blue-100 text-blue-700 border border-blue-200' 
-                                    : 'bg-orange-100 text-orange-700 border border-orange-200'
+                                    ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' 
+                                    : 'bg-orange-500/20 text-orange-400 border border-orange-500/30'
                             }">
                                 ${usuario.type === 'aluno' ? 'Aluno' : 'Personal Trainer'}
                             </span>
                         </td>
                         <td class="px-6 py-4">
-                            <div class="text-sm text-gray-700 max-w-xs">${treinoTexto}</div>
+                            <div class="text-sm text-gray-400 max-w-xs">${treinoTexto}</div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm">
                             <div class="flex gap-2">
                                 <button onclick="editarUsuario(${usuario.id})"
-                                    class="bg-cyan-500 hover:bg-cyan-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200 transform hover:scale-[1.05] shadow-md hover:shadow-lg">
-                                    Editar
+                                    class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition transform hover:scale-105">
+                                    <i class="fas fa-edit mr-1"></i>Editar
                                 </button>
                                 <button onclick="removerUsuario(${usuario.id})"
-                                    class="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200 transform hover:scale-[1.05] shadow-md hover:shadow-lg">
-                                    Remover
+                                    class="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition transform hover:scale-105">
+                                    <i class="fas fa-trash mr-1"></i>Remover
                                 </button>
                             </div>
                         </td>
@@ -209,109 +367,116 @@
             container.innerHTML = html;
         }
 
-        document.getElementById('userForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
+        let ordenacaoAtual = { campo: null, direcao: 'asc' };
 
-            const dadosUsuario = {
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                type: document.getElementById('type').value
-            };
-
-            if (dadosUsuario.type === 'aluno' && document.getElementById('treino').value) {
-                const treinoStr = document.getElementById('treino').value;
-                dadosUsuario.treino = treinoStr.split(',').map(t => t.trim()).filter(t => t);
+        function ordenarPor(campo) {
+            if (ordenacaoAtual.campo === campo) {
+                ordenacaoAtual.direcao = ordenacaoAtual.direcao === 'asc' ? 'desc' : 'asc';
             } else {
-                dadosUsuario.treino = [];
+                ordenacaoAtual.campo = campo;
+                ordenacaoAtual.direcao = 'asc';
             }
-
-            try {
-                if (idEditando) {
-                    const indice = usuarios.findIndex(u => u.id === idEditando);
-                    if (indice !== -1) {
-                        usuarios[indice] = { ...usuarios[indice], ...dadosUsuario };
-                        salvarUsuarios();
-                        mostrarMensagem('Usuário atualizado com sucesso!', 'sucesso');
-                    }
-                } else {
-                    const novoId = usuarios.length > 0 ? Math.max(...usuarios.map(u => u.id)) + 1 : 1;
-                    usuarios.push({ id: novoId, ...dadosUsuario });
-                    salvarUsuarios();
-                    mostrarMensagem('Usuário criado com sucesso!', 'sucesso');
+            
+            usuariosFiltrados.sort(function(a, b) {
+                let valorA = a[campo];
+                let valorB = b[campo];
+                
+                if (typeof valorA === 'string') {
+                    valorA = valorA.toLowerCase();
+                    valorB = valorB.toLowerCase();
                 }
                 
-                resetarFormulario();
-                carregarUsuarios();
-            } catch (erro) {
-                mostrarMensagem('Erro: ' + erro.message, 'erro');
-            }
-        });
+                if (ordenacaoAtual.direcao === 'asc') {
+                    return valorA > valorB ? 1 : -1;
+                } else {
+                    return valorA < valorB ? 1 : -1;
+                }
+            });
+            
+            exibirUsuarios(usuariosFiltrados);
+        }
+
 
         function editarUsuario(id) {
-            try {
-                const usuario = usuarios.find(u => u.id === id);
-                if (!usuario) {
-                    mostrarMensagem('Usuário não encontrado', 'erro');
-                    return;
-                }
-
-                document.getElementById('userId').value = usuario.id;
-                document.getElementById('name').value = usuario.name;
-                document.getElementById('email').value = usuario.email;
-                document.getElementById('type').value = usuario.type;
-                document.getElementById('treino').value = usuario.treino ? usuario.treino.join(', ') : '';
-                
-                const treinoGroup = document.getElementById('treinoGroup');
-                treinoGroup.classList.toggle('hidden', usuario.type !== 'aluno');
-
-                idEditando = id;
-                document.getElementById('formTitle').textContent = 'Editar Usuário';
-                document.getElementById('submitBtn').textContent = 'Atualizar';
-                document.getElementById('cancelBtn').classList.remove('hidden');
-
-                document.querySelector('.bg-white.rounded-2xl').scrollIntoView({ behavior: 'smooth' });
-            } catch (erro) {
-                mostrarMensagem('Erro: ' + erro.message, 'erro');
+            const usuario = usuarios.find(function(u) {
+                return u.id === id;
+            });
+            
+            if (!usuario) {
+                mostrarMensagem('Usuário não encontrado', 'erro');
+                return;
             }
+            
+            abrirModalEdicao(usuario);
         }
 
-        function cancelarEdicao() {
-            resetarFormulario();
-        }
-
-        function resetarFormulario() {
-            document.getElementById('userForm').reset();
-            idEditando = null;
-            document.getElementById('formTitle').textContent = 'Criar Novo Usuário';
-            document.getElementById('submitBtn').textContent = 'Criar';
-            document.getElementById('cancelBtn').classList.add('hidden');
-            document.getElementById('treinoGroup').classList.remove('hidden');
+        function abrirModalEdicao(usuario) {
+            const novoNome = prompt('Nome:', usuario.name);
+            if (novoNome === null) return;
+            
+            const novoEmail = prompt('Email:', usuario.email);
+            if (novoEmail === null) return;
+            
+            let novoTreino = '';
+            if (usuario.type === 'aluno') {
+                novoTreino = prompt('Treino (separado por vírgulas):', usuario.treino ? usuario.treino.join(', ') : '');
+                if (novoTreino === null) return;
+            }
+            
+            try {
+                const indice = usuarios.findIndex(function(u) {
+                    return u.id === usuario.id;
+                });
+                
+                if (indice !== -1) {
+                    usuarios[indice].name = novoNome.trim();
+                    usuarios[indice].email = novoEmail.trim();
+                    
+                    if (usuario.type === 'aluno' && novoTreino) {
+                        usuarios[indice].treino = novoTreino.split(',').map(function(t) {
+                            return t.trim();
+                        }).filter(function(t) {
+                            return t.length > 0;
+                        });
+                    }
+                    
+                    salvarUsuarios();
+                    mostrarMensagem('Inscrição atualizada com sucesso!', 'sucesso');
+                    carregarUsuarios();
+                }
+            } catch (erro) {
+                mostrarMensagem('Erro ao atualizar: ' + erro.message, 'erro');
+                console.error('Erro:', erro);
+            }
         }
 
         function removerUsuario(id) {
-            if (!confirm('Tem certeza que deseja remover este usuário?\n\nEsta ação não pode ser desfeita.')) {
+            if (!confirm('Tem certeza que deseja remover esta inscrição?\n\nEsta ação não pode ser desfeita.')) {
                 return;
             }
 
             try {
-                usuarios = usuarios.filter(u => u.id !== id);
+                usuarios = usuarios.filter(function(u) {
+                    return u.id !== id;
+                });
                 salvarUsuarios();
-                mostrarMensagem('Usuário removido com sucesso!', 'sucesso');
+                mostrarMensagem('Inscrição removida com sucesso!', 'sucesso');
                 carregarUsuarios();
             } catch (erro) {
-                mostrarMensagem('Erro: ' + erro.message, 'erro');
+                mostrarMensagem('Erro ao remover: ' + erro.message, 'erro');
+                console.error('Erro:', erro);
             }
         }
 
         function mostrarMensagem(texto, tipo) {
             const messageDiv = document.getElementById('message');
             messageDiv.className = tipo === 'sucesso' 
-                ? 'bg-green-50 border-l-4 border-green-500 text-green-800 p-4 rounded-lg mb-6 shadow-lg font-medium'
-                : 'bg-red-50 border-l-4 border-red-500 text-red-800 p-4 rounded-lg mb-6 shadow-lg font-medium';
+                ? 'bg-green-500/20 border-l-4 border-green-500 text-green-400 p-4 rounded-lg mb-6 font-medium'
+                : 'bg-red-500/20 border-l-4 border-red-500 text-red-400 p-4 rounded-lg mb-6 font-medium';
             messageDiv.textContent = texto;
             messageDiv.classList.remove('hidden');
 
-            setTimeout(() => {
+            setTimeout(function() {
                 messageDiv.classList.add('hidden');
             }, 4000);
         }
