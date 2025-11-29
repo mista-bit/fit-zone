@@ -3,7 +3,6 @@ namespace App\Model;
 
 /**
  * Representa um exercício dentro de um treino
- * Segue SRP - apenas dados do exercício no contexto do treino
  */
 class TreinoExercicio
 {
