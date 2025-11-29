@@ -1,22 +1,23 @@
 # 🏋️‍♂️ FitZone
 
-**FitZone** é um sistema de academia desenvolvido para organizar usuários, planos, treinos e profissionais.
-O projeto busca ser uma aplicação de controle de academia, com foco em boas práticas e organização de dados.
+**FitZone** é uma plataforma completa de gestão de academias desenvolvida para centralizar e otimizar a administração de usuários, planos de treinamento, treinos personalizados e profissionais qualificados. 
+
 
 ---
 
 ## 🚀 Tecnologias
 
 * **PHP**
-* **MySQL**
+* **JSON**
 * **HTML / CSS / JavaScript**
+* **Tailwind**
 
 ---
 
 ## 🧩 Funcionalidades
 
 * Cadastro e login de usuários
-* Perfis de usuário: **Aluno**, **Personal Trainer**, **Admin** e **PessoaNone** (visitante)
+* Perfis de usuário: **Aluno**, **Personal Trainer**, **Admin** 
 * Gerenciamento de **planos de academia**
 * Associação de **alunos a planos e personais**
 * Registro e visualização de **treinos personalizados**
@@ -33,4 +34,3 @@ O projeto busca ser uma aplicação de controle de academia, com foco em boas pr
 * **Mikael Abdias de Lima Santos**
 
 ```Projeto de conclusão da disciplina Programação Web (P2), ministrada pelo professor Daniel Brandão.```
-
