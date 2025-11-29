@@ -1,11 +1,8 @@
 -- ============================================================================
 -- FITZONE DATABASE SCHEMA - SQLite
 -- ============================================================================
--- Script de criação do banco de dados normalizado
--- Salve este arquivo como: data/schema.sql
---
--- Estrutura: Normalizada (3FN) mas simples de entender
--- Migração: Converte users.json para estrutura relacional profissional
+-- Script de criação do banco de dados normalizado (3FN)
+-- Sistema de gestão de alunos e personal trainers com treinos personalizados
 -- ============================================================================
 
 -- ----------------------------------------------------------------------------
@@ -16,16 +13,68 @@ CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
+    password TEXT NOT NULL,
     type TEXT NOT NULL CHECK(type IN ('aluno', 'personal')),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
--- Índice para buscar usuários por tipo rapidamente
 CREATE INDEX IF NOT EXISTS idx_users_type ON users(type);
-
--- Índice para buscar por email (já tem UNIQUE, mas índice melhora SELECT)
 CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+
+-- ----------------------------------------------------------------------------
+-- TABELA: planos
+-- Planos de assinatura disponíveis para alunos
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS planos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome TEXT NOT NULL UNIQUE,
+    preco REAL NOT NULL,
+    descricao TEXT,
+    beneficios TEXT, -- JSON com lista de benefícios
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT OR IGNORE INTO planos (id, nome, preco, descricao, beneficios) VALUES 
+    (1, 'basico', 99.90, 'Plano Básico', '["Acesso à academia", "1 aula experimental"]'),
+    (2, 'premium', 149.90, 'Plano Premium', '["Acesso ilimitado", "Aulas em grupo", "Suporte nutricional"]'),
+    (3, 'vip', 249.90, 'Plano VIP', '["Acesso total", "Personal trainer", "Nutricionista", "Avaliação física"]');
+
+-- ----------------------------------------------------------------------------
+-- TABELA: alunos
+-- Dados específicos de alunos (1:1 com users onde type='aluno')
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS alunos (
+    user_id INTEGER PRIMARY KEY,
+    plano_id INTEGER NOT NULL DEFAULT 1,
+    personal_id INTEGER, -- Personal trainer vinculado (pode ser NULL)
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (plano_id) REFERENCES planos(id),
+    FOREIGN KEY (personal_id) REFERENCES users(id) ON DELETE SET NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_alunos_personal ON alunos(personal_id);
+
+-- ----------------------------------------------------------------------------
+-- TABELA: solicitacoes
+-- Solicitações de alunos para personal trainers
+-- Status: pending (aguardando), accepted (aceito), rejected (recusado)
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS solicitacoes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    aluno_id INTEGER NOT NULL,
+    personal_id INTEGER NOT NULL,
+    status TEXT NOT NULL DEFAULT 'pending' CHECK(status IN ('pending', 'accepted', 'rejected')),
+    mensagem TEXT, -- Mensagem do aluno ao solicitar
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (aluno_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (personal_id) REFERENCES users(id) ON DELETE CASCADE,
+    UNIQUE(aluno_id, personal_id) -- Evita duplicatas
+);
+
+CREATE INDEX IF NOT EXISTS idx_solicitacoes_personal ON solicitacoes(personal_id, status);
+CREATE INDEX IF NOT EXISTS idx_solicitacoes_aluno ON solicitacoes(aluno_id);
 
 -- ----------------------------------------------------------------------------
 -- TABELA: exercicios
@@ -35,96 +84,125 @@ CREATE TABLE IF NOT EXISTS exercicios (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nome TEXT NOT NULL UNIQUE,
     descricao TEXT,
-    categoria TEXT, -- ex: 'Peito', 'Pernas', 'Cardio', 'Costas'
+    categoria TEXT CHECK(categoria IN ('Peito', 'Pernas', 'Cardio', 'Costas', 'Braços', 'Ombros', 'Core')),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
+INSERT OR IGNORE INTO exercicios (nome, categoria, descricao) VALUES 
+    ('Supino Reto', 'Peito', 'Exercício básico para peitoral'),
+    ('Supino Inclinado', 'Peito', 'Foca na parte superior do peitoral'),
+    ('Agachamento Livre', 'Pernas', 'Exercício completo para membros inferiores'),
+    ('Leg Press 45°', 'Pernas', 'Fortalecimento de quadríceps e glúteos'),
+    ('Corrida', 'Cardio', 'Exercício aeróbico'),
+    ('Esteira', 'Cardio', 'Caminhada ou corrida indoor'),
+    ('Rosca Direta', 'Braços', 'Isolamento de bíceps'),
+    ('Tríceps Pulley', 'Braços', 'Isolamento de tríceps'),
+    ('Remada Curvada', 'Costas', 'Desenvolvimento das costas'),
+    ('Puxada Frontal', 'Costas', 'Fortalecimento do latíssimo'),
+    ('Desenvolvimento', 'Ombros', 'Exercício composto para deltoides'),
+    ('Elevação Lateral', 'Ombros', 'Isolamento de deltoide medial'),
+    ('Abdominal Reto', 'Core', 'Fortalecimento abdominal'),
+    ('Prancha', 'Core', 'Isometria para core completo');
+
 -- ----------------------------------------------------------------------------
 -- TABELA: treinos
--- Relacionamento N:N entre alunos e exercícios
--- Cada linha representa um exercício no treino de um aluno
+-- Treinos criados por personal trainers para alunos
+-- Um treino é um conjunto de exercícios
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS treinos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     aluno_id INTEGER NOT NULL,
-    exercicio_id INTEGER NOT NULL,
-    ordem INTEGER NOT NULL DEFAULT 0, -- mantém a sequência do treino
-    series INTEGER DEFAULT 3,
-    repeticoes INTEGER DEFAULT 12,
-    observacoes TEXT,
+    personal_id INTEGER NOT NULL,
+    nome TEXT NOT NULL, -- Ex: "Treino A - Peito e Tríceps"
+    descricao TEXT,
+    ativo INTEGER DEFAULT 1, -- 1 = ativo, 0 = arquivado
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    
-    -- Chaves estrangeiras
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (aluno_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (exercicio_id) REFERENCES exercicios(id) ON DELETE RESTRICT,
-    
-    -- Garante que um aluno não tenha o mesmo exercício duplicado
-    UNIQUE(aluno_id, exercicio_id)
+    FOREIGN KEY (personal_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
--- Índice para buscar treinos de um aluno específico (query mais comum)
-CREATE INDEX IF NOT EXISTS idx_treinos_aluno ON treinos(aluno_id);
-
--- Índice para buscar todos os alunos que fazem determinado exercício
-CREATE INDEX IF NOT EXISTS idx_treinos_exercicio ON treinos(exercicio_id);
+CREATE INDEX IF NOT EXISTS idx_treinos_aluno ON treinos(aluno_id, ativo);
+CREATE INDEX IF NOT EXISTS idx_treinos_personal ON treinos(personal_id);
 
 -- ----------------------------------------------------------------------------
--- DADOS INICIAIS - Catálogo de Exercícios Comuns
+-- TABELA: treino_exercicios
+-- Exercícios que compõem cada treino (relacionamento N:N)
 -- ----------------------------------------------------------------------------
-INSERT INTO exercicios (nome, categoria) VALUES 
-    ('Supino Reto', 'Peito'),
-    ('Supino Inclinado', 'Peito'),
-    ('Agachamento', 'Pernas'),
-    ('Leg Press', 'Pernas'),
-    ('Corrida', 'Cardio'),
-    ('Esteira', 'Cardio'),
-    ('Rosca Direta', 'Braços'),
-    ('Tríceps Pulley', 'Braços'),
-    ('Remada Curvada', 'Costas'),
-    ('Puxada Frontal', 'Costas'),
-    ('Desenvolvimento', 'Ombros'),
-    ('Elevação Lateral', 'Ombros'),
-    ('Abdominal', 'Core'),
-    ('Prancha', 'Core');
+CREATE TABLE IF NOT EXISTS treino_exercicios (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    treino_id INTEGER NOT NULL,
+    exercicio_id INTEGER NOT NULL,
+    ordem INTEGER NOT NULL DEFAULT 0,
+    series INTEGER DEFAULT 3,
+    repeticoes INTEGER DEFAULT 12,
+    carga TEXT, -- Ex: "20kg", "50% 1RM"
+    descanso TEXT, -- Ex: "60s", "1min"
+    observacoes TEXT,
+    FOREIGN KEY (treino_id) REFERENCES treinos(id) ON DELETE CASCADE,
+    FOREIGN KEY (exercicio_id) REFERENCES exercicios(id) ON DELETE RESTRICT
+);
+
+CREATE INDEX IF NOT EXISTS idx_treino_exercicios_treino ON treino_exercicios(treino_id, ordem);
 
 -- ----------------------------------------------------------------------------
--- DADOS DE EXEMPLO - Usuários e Treinos
--- Remova esta seção se não quiser dados de teste
+-- VIEWS ÚTEIS
 -- ----------------------------------------------------------------------------
-INSERT INTO users (name, email, type) VALUES 
-    ('João Silva', 'joao@exemplo.com', 'aluno'),
-    ('Maria Santos', 'maria@exemplo.com', 'personal'),
-    ('Pedro Oliveira', 'pedro@exemplo.com', 'aluno');
 
--- Treino do João (aluno_id = 1)
-INSERT INTO treinos (aluno_id, exercicio_id, ordem, series, repeticoes) VALUES 
-    (1, 1, 1, 3, 12),  -- Supino Reto
-    (1, 3, 2, 4, 10),  -- Agachamento
-    (1, 5, 3, 1, 20);  -- Corrida (20 minutos)
+-- View: Lista de personals disponíveis com quantidade de alunos
+CREATE VIEW IF NOT EXISTS personals_disponiveis AS
+SELECT 
+    u.id,
+    u.name,
+    u.email,
+    COUNT(DISTINCT a.user_id) AS total_alunos
+FROM users u
+LEFT JOIN alunos a ON a.personal_id = u.id
+WHERE u.type = 'personal'
+GROUP BY u.id, u.name, u.email;
 
--- Treino do Pedro (aluno_id = 3)
-INSERT INTO treinos (aluno_id, exercicio_id, ordem, series, repeticoes, observacoes) VALUES 
-    (3, 7, 1, 3, 15, 'Aumentar carga progressivamente'),
-    (3, 9, 2, 3, 12, NULL),
-    (3, 13, 3, 3, 20, 'Manter postura');
-
--- ----------------------------------------------------------------------------
--- VIEW ÚTIL: treinos_completos
--- Facilita consultas mostrando treinos com nomes dos exercícios
--- ----------------------------------------------------------------------------
+-- View: Treinos completos com exercícios
 CREATE VIEW IF NOT EXISTS treinos_completos AS
 SELECT 
-    t.id,
-    t.aluno_id,
-    u.name AS aluno_nome,
-    t.exercicio_id,
+    t.id AS treino_id,
+    t.nome AS treino_nome,
+    t.descricao AS treino_descricao,
+    t.ativo,
+    ua.name AS aluno_nome,
+    up.name AS personal_nome,
+    te.ordem,
     e.nome AS exercicio_nome,
-    e.categoria AS exercicio_categoria,
-    t.ordem,
-    t.series,
-    t.repeticoes,
-    t.observacoes
+    e.categoria,
+    te.series,
+    te.repeticoes,
+    te.carga,
+    te.descanso,
+    te.observacoes
 FROM treinos t
-JOIN users u ON t.aluno_id = u.id
-JOIN exercicios e ON t.exercicio_id = e.id
-ORDER BY t.aluno_id, t.ordem;
+JOIN users ua ON t.aluno_id = ua.id
+JOIN users up ON t.personal_id = up.id
+LEFT JOIN treino_exercicios te ON te.treino_id = t.id
+LEFT JOIN exercicios e ON te.exercicio_id = e.id
+ORDER BY t.id, te.ordem;
+
+-- View: Solicitações pendentes
+CREATE VIEW IF NOT EXISTS solicitacoes_pendentes AS
+SELECT 
+    s.id,
+    s.status,
+    s.mensagem,
+    s.created_at,
+    ua.id AS aluno_id,
+    ua.name AS aluno_nome,
+    ua.email AS aluno_email,
+    up.id AS personal_id,
+    up.name AS personal_nome
+FROM solicitacoes s
+JOIN users ua ON s.aluno_id = ua.id
+JOIN users up ON s.personal_id = up.id
+WHERE s.status = 'pending'
+ORDER BY s.created_at DESC;
+
+-- ============================================================================
+-- FIM DO SCHEMA
+-- ============================================================================
