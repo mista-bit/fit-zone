@@ -8,51 +8,61 @@ $db = new BancoDeDados();
 $erro = "";
 
 if (isset($_POST['email']) && isset($_POST['senha'])) {
-    $email = $_POST['email'];
+    $email = trim(strtolower($_POST['email']));
     $senha = $_POST['senha'];
     
-    $usuarioEncontrado = null;
-    $tipo = null;
-    
-    // Busca em alunos
-    $aluno = $db->consultarUnico('SELECT * FROM alunos WHERE email = :email LIMIT 1', [':email' => $email]);
-    if ($aluno && $aluno['senha'] === $senha) {
-        $usuarioEncontrado = $aluno;
-        $tipo = 'aluno';
-    }
-    
-    // Busca em personais
-    if (!$usuarioEncontrado) {
-        $personal = $db->consultarUnico('SELECT * FROM personais WHERE email = :email LIMIT 1', [':email' => $email]);
-        if ($personal && $personal['senha'] === $senha) {
-            $usuarioEncontrado = $personal;
-            $tipo = 'personal';
-        }
-    }
-    
-    // Busca em admins
-    if (!$usuarioEncontrado) {
-        $admin = $db->consultarUnico('SELECT * FROM admins WHERE email = :email LIMIT 1', [':email' => $email]);
-        if ($admin && $admin['senha'] === $senha) {
-            $usuarioEncontrado = $admin;
-            $tipo = 'admin';
-        }
-    }
-    
-    if ($usuarioEncontrado) {
-        $_SESSION['usuario_id'] = $usuarioEncontrado['id'];
-        $_SESSION['usuario_nome'] = $usuarioEncontrado['nome'];
-        $_SESSION['usuario_email'] = $usuarioEncontrado['email'];
-        $_SESSION['usuario_tipo'] = $tipo;
-        
-        if ($usuarioEncontrado['tipo'] === 'admin') {
-            header("Location: clientes.php");
-        } else {
-            header("Location: area-cliente.php");
-        }
-        exit();
+    // Validações básicas
+    if (empty($email) || empty($senha)) {
+        $erro = "Por favor, preencha todos os campos!";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $erro = "Email inválido!";
     } else {
-        $erro = "Email ou senha incorretos!";
+        $usuarioEncontrado = null;
+        $tipo = null;
+        
+        // Busca em alunos
+        $aluno = $db->consultarUnico('SELECT * FROM alunos WHERE LOWER(email) = :email LIMIT 1', [':email' => $email]);
+        if ($aluno && strcmp($aluno['senha'], $senha) === 0) {
+            $usuarioEncontrado = $aluno;
+            $tipo = 'aluno';
+        }
+        
+        // Busca em personais
+        if (!$usuarioEncontrado) {
+            $personal = $db->consultarUnico('SELECT * FROM personais WHERE LOWER(email) = :email LIMIT 1', [':email' => $email]);
+            if ($personal && strcmp($personal['senha'], $senha) === 0) {
+                $usuarioEncontrado = $personal;
+                $tipo = 'personal';
+            }
+        }
+        
+        // Busca em admins
+        if (!$usuarioEncontrado) {
+            $admin = $db->consultarUnico('SELECT * FROM admins WHERE LOWER(email) = :email LIMIT 1', [':email' => $email]);
+            if ($admin && strcmp($admin['senha'], $senha) === 0) {
+                $usuarioEncontrado = $admin;
+                $tipo = 'admin';
+            }
+        }
+        
+        if ($usuarioEncontrado) {
+            // Regenera session ID para segurança
+            session_regenerate_id(true);
+            
+            $_SESSION['usuario_id'] = $usuarioEncontrado['id'];
+            $_SESSION['usuario_nome'] = $usuarioEncontrado['nome'];
+            $_SESSION['usuario_email'] = $usuarioEncontrado['email'];
+            $_SESSION['usuario_tipo'] = $tipo;
+            
+            if ($tipo === 'admin') {
+                header("Location: clientes.php");
+            } else {
+                header("Location: area-cliente.php");
+            }
+            exit();
+        } else {
+            $erro = "Email ou senha incorretos!";
+        }
     }
 }
 
