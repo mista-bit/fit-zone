@@ -11,53 +11,70 @@ $planoGet = isset($_GET['plano']) ? $_GET['plano'] : "";
 
 if (isset($_POST['nome'])) {
 
-    $nome = $_POST['nome'];
-    $email = $_POST['email'];
+    $nome = trim($_POST['nome']);
+    $email = trim(strtolower($_POST['email']));
     $senha = $_POST['senha'];
     $tipo = $_POST['tipo'];
+    
+    // Validações básicas
+    if (empty($nome) || empty($email) || empty($senha)) {
+        $mensagem = "Todos os campos são obrigatórios!";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $mensagem = "Email inválido!";
+    } elseif (strlen($senha) < 6) {
+        $mensagem = "A senha deve ter pelo menos 6 caracteres!";
+    } else {
+        try {
+            if ($tipo === "aluno") {
+                $altura = !empty($_POST["altura"]) ? floatval($_POST["altura"]) : null;
+                $peso = !empty($_POST["peso"]) ? floatval($_POST["peso"]) : null;
+                $plano = $_POST["plano"] ?? "basico";
+                $plano_id = ($plano === 'basico' ? 1 : ($plano === 'premium' ? 2 : 3));
 
-    if ($tipo === "aluno") {
-        $altura = $_POST["altura"] ?? null;
-        $peso = $_POST["peso"] ?? null;
-        $plano = $_POST["plano"] ?? "basico";
-        $plano_id = ($plano === 'basico' ? 1 : ($plano === 'premium' ? 2 : 3));
+                $id = $db->inserir("alunos", [
+                    "nome" => $nome,
+                    "email" => $email,
+                    "senha" => $senha,
+                    "altura" => $altura,
+                    "peso" => $peso,
+                    "plano_id" => $plano_id,
+                    "created_at" => date("Y-m-d H:i:s")
+                ]);
+            }
 
-        $id = $db->inserir("alunos", [
-            "nome" => $nome,
-            "email" => $email,
-            "senha" => $senha,
-            "altura" => $altura,
-            "peso" => $peso,
-            "plano_id" => $plano_id,
-            "created_at" => date("Y-m-d H:i:s")
-        ]);
+            if ($tipo === "personal") {
+                $especialidade = trim($_POST["especialidade"] ?? "");
+                
+                $id = $db->inserir("personais", [
+                    "nome" => $nome,
+                    "email" => $email,
+                    "senha" => $senha,
+                    "especialidade" => !empty($especialidade) ? $especialidade : null,
+                    "created_at" => date("Y-m-d H:i:s")
+                ]);
+            }
+
+            if ($tipo === "admin") {
+                $id = $db->inserir("admins", [
+                    "nome" => $nome,
+                    "email" => $email,
+                    "senha" => $senha,
+                    "nivel_acesso" => 1,
+                    "created_at" => date("Y-m-d H:i:s")
+                ]);
+            }
+
+            if ($id) {
+                $_SESSION['mensagem_sucesso'] = "Usuário cadastrado com sucesso!";
+                header("Location: index.php");
+                exit();
+            } else {
+                $mensagem = "Erro ao cadastrar. Email já pode estar em uso.";
+            }
+        } catch (Exception $e) {
+            $mensagem = "Erro ao cadastrar: Email já cadastrado ou dados inválidos.";
+        }
     }
-
-    if ($tipo === "personal") {
-        $especialidade = $_POST["especialidade"] ?? null;
-        
-        $id = $db->inserir("personais", [
-            "nome" => $nome,
-            "email" => $email,
-            "senha" => $senha,
-            "especialidade" => $especialidade,
-            "created_at" => date("Y-m-d H:i:s")
-        ]);
-    }
-
-    if ($tipo === "admin") {
-        $id = $db->inserir("admins", [
-            "nome" => $nome,
-            "email" => $email,
-            "senha" => $senha,
-            "nivel_acesso" => 1,
-            "created_at" => date("Y-m-d H:i:s")
-        ]);
-    }
-
-    $_SESSION['mensagem_sucesso'] = "Usuário cadastrado com sucesso!";
-    header("Location: index.php");
-    exit();
 }
 
 if (isset($_SESSION['mensagem_sucesso'])) {
