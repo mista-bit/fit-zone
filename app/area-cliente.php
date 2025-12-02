@@ -98,7 +98,7 @@ $paginaAtual = 'area-cliente';
                     Minha Área
                 </span>
             </h1>
-            <p class="text-gray-400">Bem-vindo, <?= htmlspecialchars($usuarioAtual['name']) ?>!</p>
+            <p class="text-gray-400">Bem-vindo, <?= htmlspecialchars($usuarioAtual['nome']) ?>!</p>
         </div>
 
         <div class="grid md:grid-cols-2 gap-6 mb-8">
@@ -112,7 +112,7 @@ $paginaAtual = 'area-cliente';
                 <div class="space-y-3">
                     <div>
                         <span class="text-gray-400 text-sm">Nome:</span>
-                        <p class="text-white font-medium"><?= htmlspecialchars($usuarioAtual['name']) ?></p>
+                        <p class="text-white font-medium"><?= htmlspecialchars($usuarioAtual['nome']) ?></p>
                     </div>
                     <div>
                         <span class="text-gray-400 text-sm">Email:</span>
@@ -127,10 +127,10 @@ $paginaAtual = 'area-cliente';
                                 'personal' => 'bg-purple-500/20 text-purple-300 border-purple-500/50',
                                 'admin' => 'bg-red-500/20 text-red-300 border-red-500/50'
                             ];
-                            $color = $badgeColors[$usuarioAtual['type']] ?? 'bg-gray-500/20 text-gray-300 border-gray-500/50';
+                            $color = $badgeColors[$tipo] ?? 'bg-gray-500/20 text-gray-300 border-gray-500/50';
                             ?>
                             <span class="px-3 py-1 rounded-full text-sm font-semibold border <?= $color ?>">
-                                <?= ucfirst(htmlspecialchars($usuarioAtual['type'])) ?>
+                                <?= ucfirst(htmlspecialchars($tipo)) ?>
                             </span>
                         </p>
                     </div>

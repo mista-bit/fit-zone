@@ -19,7 +19,12 @@ if ($_SESSION['usuario_tipo'] !== 'admin') {
 }
 
 // Carrega todos os usuários ordenados por created_at desc
-$usuarios = $db->consultar('SELECT * FROM users ORDER BY created_at DESC');
+$alunos = $db->consultar('SELECT id, nome, email, created_at, "aluno" as tipo FROM alunos ORDER BY created_at DESC');
+$personais = $db->consultar('SELECT id, nome, email, created_at, "personal" as tipo FROM personais ORDER BY created_at DESC');
+$admins = $db->consultar('SELECT id, nome, email, created_at, "admin" as tipo FROM admins ORDER BY created_at DESC');
+$usuarios = array_merge($alunos, $personais, $admins);
+// Reordena por data
+usort($usuarios, function($a, $b) { return strtotime($b['created_at']) - strtotime($a['created_at']); });
 $paginaAtual = 'clientes';
 ?>
 <!DOCTYPE html>
@@ -136,7 +141,7 @@ $paginaAtual = 'clientes';
                                 #<?= htmlspecialchars($u['id']) ?>
                             </td>
                             <td class="py-2.5 px-3 text-white font-medium text-sm">
-                                <?= htmlspecialchars($u['name']) ?>
+                                <?= htmlspecialchars($u['nome']) ?>
                             </td>
                             <td class="py-2.5 px-3 text-gray-300 text-sm">
                                 <?= htmlspecialchars($u['email']) ?>
@@ -148,10 +153,10 @@ $paginaAtual = 'clientes';
                                     'personal' => 'bg-purple-500/20 text-purple-300 border-purple-500/50',
                                     'admin' => 'bg-red-500/20 text-red-300 border-red-500/50'
                                 ];
-                                $color = $badgeColors[$u['type']] ?? 'bg-gray-500/20 text-gray-300 border-gray-500/50';
+                                $color = $badgeColors[$u['tipo']] ?? 'bg-gray-500/20 text-gray-300 border-gray-500/50';
                                 ?>
                                 <span class="px-2 py-0.5 rounded-full text-xs font-semibold border <?= $color ?>">
-                                    <?= ucfirst(htmlspecialchars($u['type'])) ?>
+                                    <?= ucfirst(htmlspecialchars($u['tipo'])) ?>
                                 </span>
                             </td>
                             <td class="py-2.5 px-3 text-gray-400 text-xs">
