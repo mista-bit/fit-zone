@@ -16,7 +16,7 @@ if (isset($_POST['email']) && isset($_POST['senha'])) {
     
     // Busca em alunos
     $aluno = $db->consultarUnico('SELECT * FROM alunos WHERE email = :email LIMIT 1', [':email' => $email]);
-    if ($aluno && password_verify($senha, $aluno['senha'])) {
+    if ($aluno && $aluno['senha'] === $senha) {
         $usuarioEncontrado = $aluno;
         $tipo = 'aluno';
     }
@@ -24,7 +24,7 @@ if (isset($_POST['email']) && isset($_POST['senha'])) {
     // Busca em personais
     if (!$usuarioEncontrado) {
         $personal = $db->consultarUnico('SELECT * FROM personais WHERE email = :email LIMIT 1', [':email' => $email]);
-        if ($personal && password_verify($senha, $personal['senha'])) {
+        if ($personal && $personal['senha'] === $senha) {
             $usuarioEncontrado = $personal;
             $tipo = 'personal';
         }
@@ -33,7 +33,7 @@ if (isset($_POST['email']) && isset($_POST['senha'])) {
     // Busca em admins
     if (!$usuarioEncontrado) {
         $admin = $db->consultarUnico('SELECT * FROM admins WHERE email = :email LIMIT 1', [':email' => $email]);
-        if ($admin && password_verify($senha, $admin['senha'])) {
+        if ($admin && $admin['senha'] === $senha) {
             $usuarioEncontrado = $admin;
             $tipo = 'admin';
         }

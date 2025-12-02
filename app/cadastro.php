@@ -25,7 +25,7 @@ if (isset($_POST['nome'])) {
         $id = $db->inserir("alunos", [
             "nome" => $nome,
             "email" => $email,
-            "senha" => password_hash($senha, PASSWORD_DEFAULT),
+            "senha" => $senha,
             "altura" => $altura,
             "peso" => $peso,
             "plano_id" => $plano_id,
@@ -39,7 +39,7 @@ if (isset($_POST['nome'])) {
         $id = $db->inserir("personais", [
             "nome" => $nome,
             "email" => $email,
-            "senha" => password_hash($senha, PASSWORD_DEFAULT),
+            "senha" => $senha,
             "especialidade" => $especialidade,
             "created_at" => date("Y-m-d H:i:s")
         ]);
@@ -49,7 +49,7 @@ if (isset($_POST['nome'])) {
         $id = $db->inserir("admins", [
             "nome" => $nome,
             "email" => $email,
-            "senha" => password_hash($senha, PASSWORD_DEFAULT),
+            "senha" => $senha,
             "nivel_acesso" => 1,
             "created_at" => date("Y-m-d H:i:s")
         ]);
