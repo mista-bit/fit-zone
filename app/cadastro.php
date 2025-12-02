@@ -16,39 +16,42 @@ if (isset($_POST['nome'])) {
     $senha = $_POST['senha'];
     $tipo = $_POST['tipo'];
 
-    $id = $db->inserir("usuarios", [
-        "nome" => $nome,
-        "email" => $email,
-        "senha" => password_hash($senha, PASSWORD_DEFAULT),
-        "tipo" => $tipo,
-        "dataCadastro" => date("Y-m-d H:i:s")
-    ]);
-
     if ($tipo === "aluno") {
-        $altura = $_POST["altura"] ?? "";
-        $peso = $_POST["peso"] ?? "";
-        $plano = $_POST["plano"] ?? "";
+        $altura = $_POST["altura"] ?? null;
+        $peso = $_POST["peso"] ?? null;
+        $plano = $_POST["plano"] ?? "basico";
+        $plano_id = ($plano === 'basico' ? 1 : ($plano === 'premium' ? 2 : 3));
 
-        $db->inserir("alunos", [
-            "usuario_id" => $id,
+        $id = $db->inserir("alunos", [
+            "nome" => $nome,
+            "email" => $email,
+            "senha" => $senha,
             "altura" => $altura,
             "peso" => $peso,
-            "plano" => $plano,
-            "treinos" => json_encode([])
+            "plano_id" => $plano_id,
+            "created_at" => date("Y-m-d H:i:s")
         ]);
     }
 
     if ($tipo === "personal") {
-        $db->inserir("personais", [
-            "usuario_id" => $id,
-            "acesso_treinos" => true
+        $especialidade = $_POST["especialidade"] ?? null;
+        
+        $id = $db->inserir("personais", [
+            "nome" => $nome,
+            "email" => $email,
+            "senha" => $senha,
+            "especialidade" => $especialidade,
+            "created_at" => date("Y-m-d H:i:s")
         ]);
     }
 
     if ($tipo === "admin") {
-        $db->inserir("admins", [
-            "usuario_id" => $id,
-            "acesso_total" => true
+        $id = $db->inserir("admins", [
+            "nome" => $nome,
+            "email" => $email,
+            "senha" => $senha,
+            "nivel_acesso" => 1,
+            "created_at" => date("Y-m-d H:i:s")
         ]);
     }
 

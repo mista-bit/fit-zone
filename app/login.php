@@ -11,15 +11,31 @@ if (isset($_POST['email']) && isset($_POST['senha'])) {
     $email = $_POST['email'];
     $senha = $_POST['senha'];
     
-    $usuarios = $db->ler("usuarios");
     $usuarioEncontrado = null;
+    $tipo = null;
     
-    foreach ($usuarios as $usuario) {
-        if ($usuario['email'] === $email) {
-            if (password_verify($senha, $usuario['senha'])) {
-                $usuarioEncontrado = $usuario;
-                break;
-            }
+    // Busca em alunos
+    $aluno = $db->consultarUnico('SELECT * FROM alunos WHERE email = :email LIMIT 1', [':email' => $email]);
+    if ($aluno && $aluno['senha'] === $senha) {
+        $usuarioEncontrado = $aluno;
+        $tipo = 'aluno';
+    }
+    
+    // Busca em personais
+    if (!$usuarioEncontrado) {
+        $personal = $db->consultarUnico('SELECT * FROM personais WHERE email = :email LIMIT 1', [':email' => $email]);
+        if ($personal && $personal['senha'] === $senha) {
+            $usuarioEncontrado = $personal;
+            $tipo = 'personal';
+        }
+    }
+    
+    // Busca em admins
+    if (!$usuarioEncontrado) {
+        $admin = $db->consultarUnico('SELECT * FROM admins WHERE email = :email LIMIT 1', [':email' => $email]);
+        if ($admin && $admin['senha'] === $senha) {
+            $usuarioEncontrado = $admin;
+            $tipo = 'admin';
         }
     }
     
@@ -27,7 +43,7 @@ if (isset($_POST['email']) && isset($_POST['senha'])) {
         $_SESSION['usuario_id'] = $usuarioEncontrado['id'];
         $_SESSION['usuario_nome'] = $usuarioEncontrado['nome'];
         $_SESSION['usuario_email'] = $usuarioEncontrado['email'];
-        $_SESSION['usuario_tipo'] = $usuarioEncontrado['tipo'];
+        $_SESSION['usuario_tipo'] = $tipo;
         
         if ($usuarioEncontrado['tipo'] === 'admin') {
             header("Location: clientes.php");

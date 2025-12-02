@@ -13,15 +13,8 @@ if (!isset($_SESSION['usuario_id']) || !isset($_SESSION['usuario_tipo'])) {
 }
 
 $usuario_id = $_SESSION['usuario_id'];
-$usuarios = $db->ler("usuarios");
-$usuarioAtual = null;
-
-foreach ($usuarios as $u) {
-    if ($u['id'] == $usuario_id) {
-        $usuarioAtual = $u;
-        break;
-    }
-}
+// Busca direta do usuário por ID
+$usuarioAtual = $db->buscarPorId('users', $usuario_id);
 
 if (!$usuarioAtual) {
     $_SESSION['erro_acesso'] = "Usuário não encontrado.";
@@ -134,30 +127,24 @@ $paginaAtual = 'area-cliente';
                                 'personal' => 'bg-purple-500/20 text-purple-300 border-purple-500/50',
                                 'admin' => 'bg-red-500/20 text-red-300 border-red-500/50'
                             ];
-                            $color = $badgeColors[$usuarioAtual['tipo']] ?? 'bg-gray-500/20 text-gray-300 border-gray-500/50';
+                            $color = $badgeColors[$tipo] ?? 'bg-gray-500/20 text-gray-300 border-gray-500/50';
                             ?>
                             <span class="px-3 py-1 rounded-full text-sm font-semibold border <?= $color ?>">
-                                <?= ucfirst(htmlspecialchars($usuarioAtual['tipo'])) ?>
+                                <?= ucfirst(htmlspecialchars($tipo)) ?>
                             </span>
                         </p>
                     </div>
                     <div>
                         <span class="text-gray-400 text-sm">Data de Cadastro:</span>
-                        <p class="text-white font-medium"><?= date('d/m/Y H:i', strtotime($usuarioAtual['dataCadastro'])) ?></p>
+                        <p class="text-white font-medium"><?= date('d/m/Y H:i', strtotime($usuarioAtual['created_at'])) ?></p>
                     </div>
                 </div>
             </div>
 
             <?php if ($usuarioAtual['tipo'] === 'aluno'): ?>
             <?php
-            $alunos = $db->ler("alunos");
-            $dadosAluno = null;
-            foreach ($alunos as $aluno) {
-                if ($aluno['usuario_id'] == $usuario_id) {
-                    $dadosAluno = $aluno;
-                    break;
-                }
-            }
+            // Busca direta dos dados do aluno
+            $dadosAluno = $db->consultarUnico('SELECT * FROM alunos WHERE user_id = :uid LIMIT 1', [':uid' => $usuario_id]);
             ?>
             <div class="bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl p-6 border border-white/20">
                 <h2 class="text-xl font-bold text-white mb-4 flex items-center gap-2">

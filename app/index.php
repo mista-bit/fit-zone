@@ -18,7 +18,11 @@ if (isset($_SESSION['erro_acesso'])) {
     unset($_SESSION['erro_acesso']);
 }
 
-$usuarios = $db->ler("usuarios");
+// Combina todos os usuários
+$alunos = $db->consultar('SELECT id, nome, email, created_at, "aluno" as tipo FROM alunos');
+$personais = $db->consultar('SELECT id, nome, email, created_at, "personal" as tipo FROM personais');
+$admins = $db->consultar('SELECT id, nome, email, created_at, "admin" as tipo FROM admins');
+$usuarios = array_merge($alunos, $personais, $admins);
 $paginaAtual = 'home';
 ?>
 <!DOCTYPE html>

@@ -18,7 +18,13 @@ if ($_SESSION['usuario_tipo'] !== 'admin') {
     exit();
 }
 
-$usuarios = $db->ler("usuarios");
+// Carrega todos os usuários ordenados por created_at desc
+$alunos = $db->consultar('SELECT id, nome, email, created_at, "aluno" as tipo FROM alunos ORDER BY created_at DESC');
+$personais = $db->consultar('SELECT id, nome, email, created_at, "personal" as tipo FROM personais ORDER BY created_at DESC');
+$admins = $db->consultar('SELECT id, nome, email, created_at, "admin" as tipo FROM admins ORDER BY created_at DESC');
+$usuarios = array_merge($alunos, $personais, $admins);
+// Reordena por data
+usort($usuarios, function($a, $b) { return strtotime($b['created_at']) - strtotime($a['created_at']); });
 $paginaAtual = 'clientes';
 ?>
 <!DOCTYPE html>
@@ -154,7 +160,7 @@ $paginaAtual = 'clientes';
                                 </span>
                             </td>
                             <td class="py-2.5 px-3 text-gray-400 text-xs">
-                                <?= date('d/m/Y H:i', strtotime($u['dataCadastro'])) ?>
+                                <?= date('d/m/Y H:i', strtotime($u['created_at'])) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
