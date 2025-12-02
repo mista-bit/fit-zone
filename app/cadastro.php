@@ -16,12 +16,12 @@ if (isset($_POST['nome'])) {
     $senha = $_POST['senha'];
     $tipo = $_POST['tipo'];
 
-    $id = $db->inserir("usuarios", [
-        "nome" => $nome,
+    $id = $db->inserir("users", [
+        "name" => $nome,
         "email" => $email,
-        "senha" => password_hash($senha, PASSWORD_DEFAULT),
-        "tipo" => $tipo,
-        "dataCadastro" => date("Y-m-d H:i:s")
+        "password" => password_hash($senha, PASSWORD_DEFAULT),
+        "type" => $tipo,
+        "created_at" => date("Y-m-d H:i:s")
     ]);
 
     if ($tipo === "aluno") {
@@ -29,12 +29,10 @@ if (isset($_POST['nome'])) {
         $peso = $_POST["peso"] ?? "";
         $plano = $_POST["plano"] ?? "";
 
+        // Campo treinos armazenado como JSON vazio
         $db->inserir("alunos", [
-            "usuario_id" => $id,
-            "altura" => $altura,
-            "peso" => $peso,
-            "plano" => $plano,
-            "treinos" => json_encode([])
+            "user_id" => $id,
+            "plano_id" => ($plano === 'basico' ? 1 : ($plano === 'premium' ? 2 : 3))
         ]);
     }
 

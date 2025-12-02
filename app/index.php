@@ -18,7 +18,7 @@ if (isset($_SESSION['erro_acesso'])) {
     unset($_SESSION['erro_acesso']);
 }
 
-$usuarios = $db->ler("usuarios");
+$usuarios = $db->ler("users");
 $paginaAtual = 'home';
 ?>
 <!DOCTYPE html>

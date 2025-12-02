@@ -18,7 +18,8 @@ if ($_SESSION['usuario_tipo'] !== 'admin') {
     exit();
 }
 
-$usuarios = $db->ler("usuarios");
+// Carrega todos os usuários ordenados por created_at desc
+$usuarios = $db->consultar('SELECT * FROM users ORDER BY created_at DESC');
 $paginaAtual = 'clientes';
 ?>
 <!DOCTYPE html>
@@ -135,7 +136,7 @@ $paginaAtual = 'clientes';
                                 #<?= htmlspecialchars($u['id']) ?>
                             </td>
                             <td class="py-2.5 px-3 text-white font-medium text-sm">
-                                <?= htmlspecialchars($u['nome']) ?>
+                                <?= htmlspecialchars($u['name']) ?>
                             </td>
                             <td class="py-2.5 px-3 text-gray-300 text-sm">
                                 <?= htmlspecialchars($u['email']) ?>
@@ -147,14 +148,14 @@ $paginaAtual = 'clientes';
                                     'personal' => 'bg-purple-500/20 text-purple-300 border-purple-500/50',
                                     'admin' => 'bg-red-500/20 text-red-300 border-red-500/50'
                                 ];
-                                $color = $badgeColors[$u['tipo']] ?? 'bg-gray-500/20 text-gray-300 border-gray-500/50';
+                                $color = $badgeColors[$u['type']] ?? 'bg-gray-500/20 text-gray-300 border-gray-500/50';
                                 ?>
                                 <span class="px-2 py-0.5 rounded-full text-xs font-semibold border <?= $color ?>">
-                                    <?= ucfirst(htmlspecialchars($u['tipo'])) ?>
+                                    <?= ucfirst(htmlspecialchars($u['type'])) ?>
                                 </span>
                             </td>
                             <td class="py-2.5 px-3 text-gray-400 text-xs">
-                                <?= date('d/m/Y H:i', strtotime($u['dataCadastro'])) ?>
+                                <?= date('d/m/Y H:i', strtotime($u['created_at'])) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>

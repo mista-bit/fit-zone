@@ -11,23 +11,18 @@ if (isset($_POST['email']) && isset($_POST['senha'])) {
     $email = $_POST['email'];
     $senha = $_POST['senha'];
     
-    $usuarios = $db->ler("usuarios");
+    // Consulta direta por email em vez de carregar toda a tabela
+    $usuario = $db->consultarUnico('SELECT * FROM users WHERE email = :email LIMIT 1', [':email' => $email]);
     $usuarioEncontrado = null;
-    
-    foreach ($usuarios as $usuario) {
-        if ($usuario['email'] === $email) {
-            if (password_verify($senha, $usuario['senha'])) {
-                $usuarioEncontrado = $usuario;
-                break;
-            }
-        }
+    if ($usuario && password_verify($senha, $usuario['password'])) {
+        $usuarioEncontrado = $usuario;
     }
     
     if ($usuarioEncontrado) {
         $_SESSION['usuario_id'] = $usuarioEncontrado['id'];
-        $_SESSION['usuario_nome'] = $usuarioEncontrado['nome'];
+        $_SESSION['usuario_nome'] = $usuarioEncontrado['name'];
         $_SESSION['usuario_email'] = $usuarioEncontrado['email'];
-        $_SESSION['usuario_tipo'] = $usuarioEncontrado['tipo'];
+        $_SESSION['usuario_tipo'] = $usuarioEncontrado['type'];
         
         if ($usuarioEncontrado['tipo'] === 'admin') {
             header("Location: clientes.php");

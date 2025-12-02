@@ -2,82 +2,132 @@
 
 class BancoDeDados {
 
-    private $path;
+    private $pdo;
 
     public function __construct() {
-        $this->path = __DIR__ . "/banco/";
-
-        if (!is_dir($this->path)) {
-            mkdir($this->path, 0777, true);
+        $dbPath = __DIR__ . '/../data/fitzone.db';
+        $dbDir = dirname($dbPath);
+        
+        if (!is_dir($dbDir)) {
+            mkdir($dbDir, 0777, true);
+        }
+        
+        $dbExists = file_exists($dbPath);
+        
+        $dsn = "sqlite:{$dbPath}";
+        $this->pdo = new \PDO($dsn, null, null, [
+            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+            \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
+        ]);
+        
+        // Se DB novo, importa schema
+        if (!$dbExists) {
+            $this->inicializarSchema();
         }
     }
-
-   
-    public function ler($tabela) {
-        $arquivo = $this->path . $tabela . ".json";
-
-        if (!file_exists($arquivo)) {
-            file_put_contents($arquivo, "[]");
-        }
-
-        return json_decode(file_get_contents($arquivo), true);
-    }
-
-   
-    public function salvar($tabela, $dados) {
-        $arquivo = $this->path . $tabela . ".json";
-        file_put_contents($arquivo, json_encode($dados, JSON_PRETTY_PRINT));
-    }
-
     
-    public function inserir($tabela, $registro) {
-        $dados = $this->ler($tabela);
-
-        $registro["id"] = count($dados) > 0 
-            ? $dados[count($dados) - 1]["id"] + 1
-            : 1;
-
-        $dados[] = $registro;
-        $this->salvar($tabela, $dados);
-
-        return $registro["id"];
-    }
-
-    
-    public function atualizar($tabela, $id, $novosDados) {
-        $dados = $this->ler($tabela);
-
-        foreach ($dados as &$item) {
-            if ($item["id"] == $id) {
-                $item = array_merge($item, $novosDados);
-                break;
+    private function inicializarSchema() {
+        $schemaPath = __DIR__ . '/../data/schema.sql';
+        if (file_exists($schemaPath)) {
+            $sql = file_get_contents($schemaPath);
+            // SQLite executa statements separadamente
+            $statements = explode(';', $sql);
+            foreach ($statements as $statement) {
+                $statement = trim($statement);
+                if (!empty($statement)) {
+                    try {
+                        $this->pdo->exec($statement);
+                    } catch (\PDOException $e) {
+                        // Ignora erros de tabelas já existentes
+                        if (strpos($e->getMessage(), 'already exists') === false) {
+                            throw $e;
+                        }
+                    }
+                }
             }
         }
-
-        $this->salvar($tabela, $dados);
     }
 
-   
-    public function deletar($tabela, $id) {
-        $dados = $this->ler($tabela);
-
-        $dados = array_filter($dados, function($item) use ($id) {
-            return $item["id"] != $id;
-        });
-
-        $dados = array_values($dados);
-
-        $this->salvar($tabela, $dados);
+    // Retorna todos os registros da tabela
+    public function ler($tabela) {
+        $stmt = $this->pdo->query("SELECT * FROM `{$tabela}`");
+        return $stmt->fetchAll();
     }
 
+    // Inserção genérica: retorna ID
+    public function inserir($tabela, $registro) {
+        $colunas = array_keys($registro);
+        $placeholders = array_map(fn($c) => ':' . $c, $colunas);
+        $sql = sprintf(
+            'INSERT INTO `%s` (%s) VALUES (%s)',
+            $tabela,
+            implode(',', array_map(fn($c) => "`$c`", $colunas)),
+            implode(',', $placeholders)
+        );
 
-    public function buscarPorId($tabela, $id) {
-        $dados = $this->ler($tabela);
-
-        foreach ($dados as $item) {
-            if ($item["id"] == $id) return $item;
+        $stmt = $this->pdo->prepare($sql);
+        foreach ($registro as $coluna => $valor) {
+            $stmt->bindValue(':' . $coluna, $valor);
         }
+        $stmt->execute();
+        return (int)$this->pdo->lastInsertId();
+    }
 
-        return null;
+    // Atualização por id
+    public function atualizar($tabela, $id, $novosDados) {
+        $sets = [];
+        foreach ($novosDados as $coluna => $_) {
+            $sets[] = "`$coluna` = :$coluna";
+        }
+        $sql = sprintf(
+            'UPDATE `%s` SET %s WHERE `id` = :id',
+            $tabela,
+            implode(', ', $sets)
+        );
+        $stmt = $this->pdo->prepare($sql);
+        foreach ($novosDados as $coluna => $valor) {
+            $stmt->bindValue(':' . $coluna, $valor);
+        }
+        $stmt->bindValue(':id', $id, \PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
+    // Remoção por id
+    public function deletar($tabela, $id) {
+        $stmt = $this->pdo->prepare("DELETE FROM `{$tabela}` WHERE `id` = :id");
+        $stmt->bindValue(':id', $id, \PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
+    // Busca por id
+    public function buscarPorId($tabela, $id) {
+        $stmt = $this->pdo->prepare("SELECT * FROM `{$tabela}` WHERE `id` = :id");
+        $stmt->bindValue(':id', $id, \PDO::PARAM_INT);
+        $stmt->execute();
+        $res = $stmt->fetch();
+        return $res ?: null;
+    }
+
+    // Consulta genérica preparada (SELECT) retornando lista
+    public function consultar($sql, $params = []) {
+        $stmt = $this->pdo->prepare($sql);
+        foreach ($params as $k => $v) {
+            $tipo = is_int($v) ? \PDO::PARAM_INT : \PDO::PARAM_STR;
+            $stmt->bindValue(is_string($k) ? $k : ($k + 1), $v, $tipo);
+        }
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    // Consulta única (primeira linha) ou null
+    public function consultarUnico($sql, $params = []) {
+        $stmt = $this->pdo->prepare($sql);
+        foreach ($params as $k => $v) {
+            $tipo = is_int($v) ? \PDO::PARAM_INT : \PDO::PARAM_STR;
+            $stmt->bindValue(is_string($k) ? $k : ($k + 1), $v, $tipo);
+        }
+        $stmt->execute();
+        $res = $stmt->fetch();
+        return $res ?: null;
     }
 }
