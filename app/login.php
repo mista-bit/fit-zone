@@ -55,7 +55,7 @@ if (isset($_POST['email']) && isset($_POST['senha'])) {
             $_SESSION['usuario_tipo'] = $tipo;
             
             if ($tipo === 'admin') {
-                header("Location: clientes.php");
+                header("Location: admin/index.php");
             } else {
                 header("Location: area-cliente.php");
             }
@@ -68,7 +68,7 @@ if (isset($_POST['email']) && isset($_POST['senha'])) {
 
 if (isset($_SESSION['usuario_id'])) {
     if (isset($_SESSION['usuario_tipo']) && $_SESSION['usuario_tipo'] === 'admin') {
-        header("Location: clientes.php");
+        header("Location: admin/index.php");
     } else {
         header("Location: area-cliente.php");
     }
@@ -110,7 +110,7 @@ $paginaAtual = 'login';
                         Planos
                     </a>
                     <?php if (isset($_SESSION['usuario_tipo']) && $_SESSION['usuario_tipo'] === 'admin'): ?>
-                    <a href="clientes.php" 
+                    <a href="admin/index.php" 
                        class="text-gray-300 hover:text-white transition-colors">
                         Clientes
                     </a>
