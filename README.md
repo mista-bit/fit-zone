@@ -20,6 +20,14 @@
 - **Email:** `admin@fitzone.com`
 - **Senha:** `admin123`
 
+### **Personal Trainer**
+- **Email:** `personal@fitzone.com`
+- **Senha:** `personal123`
+
+### **Aluno**
+- **Email:** `aluno@fitzone.com`
+- **Senha:** `aluno123`
+
 ---
 
 ## 🗄️ Persistência de Dados

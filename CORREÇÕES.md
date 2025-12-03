@@ -1,6 +1,6 @@
 # 🔧 Problemas Corrigidos - FitZone Admin
 
-## ❌ **Erro Principal Identificado:**
+## ❌ **Erros Principais Identificados:**
 
 ### 1. **Arquivo `admin-only.php` não existia**
 - Vários arquivos tentavam incluir `require 'admin-only.php'` mas o arquivo não estava criado
@@ -10,6 +10,19 @@
 - Verificação de sessão
 - Verificação de permissão de admin
 - Conexão PDO com o banco de dados
+
+### 2. **Erro: "no such table: users"**
+- O arquivo `area-cliente.php` tentava buscar na tabela `users` que não existe
+- O banco usa tabelas separadas: `alunos`, `personais` e `admins`
+
+**✅ SOLUÇÃO:** Corrigido para buscar na tabela correta baseado no tipo de usuário:
+```php
+switch ($usuario_tipo) {
+    case 'aluno': $tabela = 'alunos'; break;
+    case 'personal': $tabela = 'personais'; break;
+    case 'admin': $tabela = 'admins'; break;
+}
+```
 
 ---
 
@@ -43,7 +56,14 @@
 - **Email:** admin@fitzone.com
 - **Senha:** admin123
 
-### 7. **Documentação**
+### 7. **Usuários de Teste**
+- ✅ Adicionado Personal de teste
+  - **Email:** personal@fitzone.com | **Senha:** personal123
+- ✅ Adicionado Aluno de teste
+  - **Email:** aluno@fitzone.com | **Senha:** aluno123
+- ✅ Criado script `criar-usuarios-teste.php` para facilitar criação
+
+### 8. **Documentação**
 - ✅ README.md atualizado com credenciais de acesso
 - ✅ Instruções claras de primeiro acesso
 
@@ -56,11 +76,14 @@
 2. `app/admin/novo-exercicio.php` - Criar exercícios
 3. `app/admin/editar-exercicio.php` - Editar exercícios
 4. `app/admin/excluir-exercicio.php` - Deletar exercícios
+5. `data/criar-usuarios-teste.php` - Script para criar usuários de teste
+6. `data/adicionar-usuarios-teste.sql` - SQL para adicionar usuários
 
 ### Arquivos Modificados:
 1. `app/admin/index.php` - CSS, handlers AJAX, verificação de acesso
-2. `data/schema.sql` - Admin padrão adicionado
-3. `README.md` - Credenciais e documentação
+2. `app/area-cliente.php` - **CORRIGIDO** erro da tabela `users`
+3. `data/schema.sql` - Admin padrão + usuários de teste
+4. `README.md` - Credenciais e documentação
 
 ---
 
@@ -78,9 +101,27 @@
 
 ## 🚀 **Como Testar:**
 
+### **Opção 1: Banco Novo (Recomendado)**
+1. Delete o arquivo `data/fitzone.db` (se existir)
+2. Acesse qualquer página do sistema
+3. O banco será recriado automaticamente com todos os usuários de teste
+
+### **Opção 2: Banco Existente**
+1. Acesse: `http://localhost/fit-zone/data/criar-usuarios-teste.php`
+2. Clique em "Ir para Login"
+
+### **Opção 3: Testar Diretamente**
 1. Acesse: `http://localhost/fit-zone/app/login.php`
-2. Use as credenciais:
-   - Email: `admin@fitzone.com`
-   - Senha: `admin123`
-3. Você será redirecionado para o painel admin
-4. Teste todas as abas: Dashboard, Usuários, Planos, Exercícios, Treinos
+2. Use uma das credenciais:
+
+**👨‍💼 Admin:**
+- Email: `admin@fitzone.com`
+- Senha: `admin123`
+
+**🏋️ Personal Trainer:**
+- Email: `personal@fitzone.com`
+- Senha: `personal123`
+
+**👤 Aluno:**
+- Email: `aluno@fitzone.com`
+- Senha: `aluno123`

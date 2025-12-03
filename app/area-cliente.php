@@ -146,10 +146,10 @@ $paginaAtual = 'area-cliente';
                                 'personal' => 'bg-purple-500/20 text-purple-300 border-purple-500/50',
                                 'admin' => 'bg-red-500/20 text-red-300 border-red-500/50'
                             ];
-                            $color = $badgeColors[$tipo] ?? 'bg-gray-500/20 text-gray-300 border-gray-500/50';
+                            $color = $badgeColors[$usuario_tipo] ?? 'bg-gray-500/20 text-gray-300 border-gray-500/50';
                             ?>
                             <span class="px-3 py-1 rounded-full text-sm font-semibold border <?= $color ?>">
-                                <?= ucfirst(htmlspecialchars($tipo)) ?>
+                                <?= ucfirst(htmlspecialchars($usuario_tipo)) ?>
                             </span>
                         </p>
                     </div>
@@ -160,10 +160,13 @@ $paginaAtual = 'area-cliente';
                 </div>
             </div>
 
-            <?php if ($usuarioAtual['tipo'] === 'aluno'): ?>
+            <?php if ($usuario_tipo === 'aluno'): ?>
             <?php
-            // Busca direta dos dados do aluno
-            $dadosAluno = $db->consultarUnico('SELECT * FROM alunos WHERE user_id = :uid LIMIT 1', [':uid' => $usuario_id]);
+            // Para alunos, buscar informações do plano
+            $plano = null;
+            if (isset($usuarioAtual['plano_id']) && $usuarioAtual['plano_id']) {
+                $plano = $db->buscarPorId('planos', $usuarioAtual['plano_id']);
+            }
             ?>
             <div class="bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl p-6 border border-white/20">
                 <h2 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
@@ -172,24 +175,30 @@ $paginaAtual = 'area-cliente';
                     </svg>
                     Meu Plano
                 </h2>
-                <?php if ($dadosAluno): ?>
                 <div class="space-y-3">
                     <div>
                         <span class="text-gray-400 text-sm">Plano:</span>
-                        <p class="text-white font-medium"><?= $dadosAluno['plano'] ? htmlspecialchars($dadosAluno['plano']) : 'Não definido' ?></p>
+                        <p class="text-white font-medium"><?= $plano ? htmlspecialchars($plano['nome']) : 'Não definido' ?></p>
+                    </div>
+                    <?php if ($plano): ?>
+                    <div>
+                        <span class="text-gray-400 text-sm">Valor:</span>
+                        <p class="text-white font-medium">R$ <?= number_format($plano['preco'], 2, ',', '.') ?></p>
                     </div>
                     <div>
+                        <span class="text-gray-400 text-sm">Descrição:</span>
+                        <p class="text-white font-medium"><?= htmlspecialchars($plano['descricao'] ?? '') ?></p>
+                    </div>
+                    <?php endif; ?>
+                    <div>
                         <span class="text-gray-400 text-sm">Altura:</span>
-                        <p class="text-white font-medium"><?= $dadosAluno['altura'] ? htmlspecialchars($dadosAluno['altura']) : 'Não informado' ?></p>
+                        <p class="text-white font-medium"><?= isset($usuarioAtual['altura']) && $usuarioAtual['altura'] ? htmlspecialchars($usuarioAtual['altura']) . ' m' : 'Não informado' ?></p>
                     </div>
                     <div>
                         <span class="text-gray-400 text-sm">Peso:</span>
-                        <p class="text-white font-medium"><?= $dadosAluno['peso'] ? htmlspecialchars($dadosAluno['peso']) : 'Não informado' ?></p>
+                        <p class="text-white font-medium"><?= isset($usuarioAtual['peso']) && $usuarioAtual['peso'] ? htmlspecialchars($usuarioAtual['peso']) . ' kg' : 'Não informado' ?></p>
                     </div>
                 </div>
-                <?php else: ?>
-                <p class="text-gray-400">Dados do aluno ainda não foram configurados.</p>
-                <?php endif; ?>
             </div>
             <?php endif; ?>
         </div>
