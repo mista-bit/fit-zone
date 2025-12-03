@@ -52,11 +52,19 @@ O banco de dados será criado automaticamente em `data/fitzone.db` na primeira e
 * Perfis de usuário: **Aluno**, **Personal Trainer**, **Admin** 
 * Gerenciamento de **planos de academia**
 * Associação de **alunos a planos e personais**
-* Registro e visualização de **treinos personalizados**
 * **Gerenciamento de exercícios** (adicionar, editar, excluir)
 * **Painel administrativo completo**
 * **Edição de dados físicos** (altura e peso) pelos alunos
 * **Cálculo automático de IMC**
+* **Gerenciamento completo de treinos pelos alunos:**
+  - Visualização de todos os treinos atribuídos
+  - **Criação de treinos personalizados** pelos próprios alunos
+  - Seleção de exercícios por categoria
+  - Configuração de séries, repetições, carga e descanso
+  - Adição de observações para cada exercício
+  - Detalhes completos de cada treino
+  - Status do treino (ativo/inativo)
+  - Informações do personal trainer responsável
   
 ---
 
