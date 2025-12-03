@@ -5,11 +5,11 @@ session_start();
 require_once __DIR__ . '/../db.php';
 
 // Verificação de acesso admin
-// if (!isset($_SESSION['usuario_id']) || $_SESSION['usuario_tipo'] !== 'admin') {
-//     $_SESSION['erro_acesso'] = "Acesso negado. Apenas administradores.";
-//     header("Location: ../index.php");
-//     exit();
-// }
+if (!isset($_SESSION['usuario_id']) || $_SESSION['usuario_tipo'] !== 'admin') {
+    $_SESSION['erro_acesso'] = "Acesso negado. Apenas administradores.";
+    header("Location: ../login.php");
+    exit();
+}
 
 $db = new BancoDeDados();
 
@@ -56,6 +56,18 @@ if (isset($_GET['action'])) {
             $db->deletar($tabela, $id);
             echo json_encode(['success' => true]);
             exit();
+            
+        case 'delete_plano':
+            $id = $_GET['id'] ?? 0;
+            $db->deletar('planos', $id);
+            echo json_encode(['success' => true]);
+            exit();
+            
+        case 'delete_exercicio':
+            $id = $_GET['id'] ?? 0;
+            $db->deletar('exercicios', $id);
+            echo json_encode(['success' => true]);
+            exit();
     }
 }
 ?>
@@ -66,8 +78,118 @@ if (isset($_GET['action'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel Administrativo - FitZone</title>
     <style>
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+        }
+        nav {
+            background: #2c3e50;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            padding: 10px 20px;
+            background: #ecf0f1;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .tab-btn.active {
+            background: #3498db;
+            color: white;
+        }
+        .tab-btn:hover {
+            background: #bdc3c7;
+        }
+        .tab-btn.active:hover {
+            background: #2980b9;
+        }
+        .tab-content { 
+            display: none; 
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .tab-content.active { 
+            display: block; 
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .stat-card h3 {
+            font-size: 14px;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+        .stat-card p {
+            font-size: 32px;
+            font-weight: bold;
+        }
+        button {
+            padding: 10px 20px;
+            background: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #229954;
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        #usuarios-list > div,
+        #planos-list > div,
+        #exercicios-list > div {
+            background: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border-left: 4px solid #3498db;
+        }
     </style>
 </head>
 <body>
@@ -75,50 +197,51 @@ if (isset($_GET['action'])) {
     <!-- Navbar -->
     <nav>
         <div>
-            <a href="../index.php">FitZone Admin</a>
-            <span>Painel Administrativo</span>
-            <span>Olá, <?= htmlspecialchars($_SESSION['usuario_nome']) ?></span>
-            <a href="../logout.php">Sair</a>
+            <a href="../index.php">🏋️ FitZone Admin</a>
+        </div>
+        <div>
+            <span>Olá, <?= htmlspecialchars($_SESSION['usuario_nome'] ?? 'Admin') ?></span>
+            <a href="../logout.php" style="margin-left: 20px;">Sair</a>
         </div>
     </nav>
 
-    <div>
+    <div class="container">
         <!-- Tabs Navigation -->
-        <div>
+        <div class="tabs">
             <button onclick="switchTab('dashboard')" class="tab-btn active" data-tab="dashboard">
-                Dashboard
+                📊 Dashboard
             </button>
             <button onclick="switchTab('usuarios')" class="tab-btn" data-tab="usuarios">
-                Usuários
+                👥 Usuários
             </button>
             <button onclick="switchTab('planos')" class="tab-btn" data-tab="planos">
-                Planos
+                💳 Planos
             </button>
             <button onclick="switchTab('exercicios')" class="tab-btn" data-tab="exercicios">
-                Exercícios
+                💪 Exercícios
             </button>
             <button onclick="switchTab('treinos')" class="tab-btn" data-tab="treinos">
-                Treinos
+                📋 Treinos
             </button>
         </div>
 
         <!-- Dashboard Tab -->
         <div id="tab-dashboard" class="tab-content active">
             <!-- Estatísticas -->
-            <div>
-                <div>
+            <div class="stats">
+                <div class="stat-card">
                     <h3>Total Alunos</h3>
                     <p><?= $totalAlunos ?></p>
                 </div>
-                <div>
+                <div class="stat-card">
                     <h3>Personal Trainers</h3>
                     <p><?= $totalPersonais ?></p>
                 </div>
-                <div>
+                <div class="stat-card">
                     <h3>Treinos Ativos</h3>
                     <p><?= $totalTreinos ?></p>
                 </div>
-                <div>
+                <div class="stat-card">
                     <h3>Exercícios</h3>
                     <p><?= $totalExercicios ?></p>
                 </div>
@@ -169,6 +292,7 @@ if (isset($_GET['action'])) {
         <div id="tab-planos" class="tab-content">
             <div>
                 <h2>Gerenciar Planos</h2>
+                <button onclick="location.href='novo-plano.php'">+ Novo Plano</button>
                 <div id="planos-list">
                     <p>Carregando...</p>
                 </div>
@@ -179,7 +303,7 @@ if (isset($_GET['action'])) {
         <div id="tab-exercicios" class="tab-content">
             <div>
                 <h2>Gerenciar Exercícios</h2>
-                <button onclick="alert('Funcionalidade em desenvolvimento')">+ Novo Exercício</button>
+                <button onclick="location.href='novo-exercicio.php'">+ Novo Exercício</button>
                 <div id="exercicios-list">
                     <p>Carregando...</p>
                 </div>
@@ -254,7 +378,8 @@ if (isset($_GET['action'])) {
                 <h3>${p.nome}</h3>
                 <p>R$ ${parseFloat(p.preco).toFixed(2)}</p>
                 <p>${p.descricao}</p>
-                <button>Editar Plano</button>
+                <button onclick="location.href='editar-plano.php?id=${p.id}'">Editar</button>
+                <button onclick="deletePlano(${p.id})" style="background: #dc3545; margin-left: 5px;">Excluir</button>
             </div>
         `).join('');
         
@@ -270,7 +395,8 @@ if (isset($_GET['action'])) {
             <div>
                 <strong>${e.nome}</strong>
                 <p>${e.categoria} • ${e.descricao || 'Sem descrição'}</p>
-                <button>Editar</button>
+                <button onclick="location.href='editar-exercicio.php?id=${e.id}'">Editar</button>
+                <button onclick="deleteExercicio(${e.id})" style="background: #dc3545; margin-left: 5px;">Excluir</button>
             </div>
         `).join('');
         
@@ -283,6 +409,22 @@ if (isset($_GET['action'])) {
         
         await fetch(`?action=delete_usuario&id=${id}&tipo=${tipo}`);
         loadUsuarios();
+    }
+
+    // Deleta plano
+    async function deletePlano(id) {
+        if (!confirm('Tem certeza que deseja excluir este plano?')) return;
+        
+        await fetch(`?action=delete_plano&id=${id}`);
+        loadPlanos();
+    }
+
+    // Deleta exercício
+    async function deleteExercicio(id) {
+        if (!confirm('Tem certeza que deseja excluir este exercício?')) return;
+        
+        await fetch(`?action=delete_exercicio&id=${id}`);
+        loadExercicios();
     }
     </script>
 

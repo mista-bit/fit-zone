@@ -8,15 +8,31 @@
 ## 🚀 Tecnologias
 
 * **PHP** (PDO)
-* **MySQL** (persistência principal – removido armazenamento JSON)
+* **SQLite** (persistência de dados)
 * **HTML / CSS / JavaScript**
 * **Tailwind**
 
 ---
 
+## 🔐 Acesso Padrão ao Sistema
+
+### **Administrador**
+- **Email:** `admin@fitzone.com`
+- **Senha:** `admin123`
+
+### **Personal Trainer**
+- **Email:** `personal@fitzone.com`
+- **Senha:** `personal123`
+
+### **Aluno**
+- **Email:** `aluno@fitzone.com`
+- **Senha:** `aluno123`
+
+---
+
 ## 🗄️ Persistência de Dados
 
-Originalmente alguns dados eram mantidos em arquivos JSON locais. A aplicação foi refatorada para usar exclusivamente MySQL com o schema em `data/schema.sql`. A classe `BancoDeDados` agora utiliza PDO e oferece métodos genéricos:
+A aplicação utiliza **SQLite** com o schema em `data/schema.sql`. A classe `BancoDeDados` utiliza PDO e oferece métodos genéricos:
 
 - `ler($tabela)` – SELECT *
 - `inserir($tabela, $registro)` – INSERT dinâmico
@@ -26,14 +42,7 @@ Originalmente alguns dados eram mantidos em arquivos JSON locais. A aplicação 
 - `consultar($sql, $params)` – SELECT preparado (lista)
 - `consultarUnico($sql, $params)` – SELECT preparado (único)
 
-Configuração padrão (XAMPP): host `127.0.0.1`, usuário `root`, senha vazia, banco `fitzone`.
-
-Para criar o banco:
-```sql
-CREATE DATABASE IF NOT EXISTS fitzone;
-USE fitzone;
-SOURCE data/schema.sql;
-```
+O banco de dados será criado automaticamente em `data/fitzone.db` na primeira execução.
 
 ---
 
@@ -44,7 +53,10 @@ SOURCE data/schema.sql;
 * Gerenciamento de **planos de academia**
 * Associação de **alunos a planos e personais**
 * Registro e visualização de **treinos personalizados**
-* Simulação de módulo de **pagamentos**
+* **Gerenciamento de exercícios** (adicionar, editar, excluir)
+* **Painel administrativo completo**
+* **Edição de dados físicos** (altura e peso) pelos alunos
+* **Cálculo automático de IMC**
   
 ---
 

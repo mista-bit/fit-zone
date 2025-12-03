@@ -92,6 +92,18 @@ INSERT OR IGNORE INTO planos (id, nome, preco, descricao, beneficios) VALUES
     (2, 'premium', 149.90, 'Plano Premium', '["Acesso ilimitado", "Aulas em grupo", "Suporte nutricional"]'),
     (3, 'vip', 249.90, 'Plano VIP', '["Acesso total", "Personal trainer", "Nutricionista", "Avaliação física"]');
 
+-- Admin padrão: email: admin@fitzone.com | senha: admin123
+INSERT OR IGNORE INTO admins (id, nome, email, senha, nivel_acesso) VALUES 
+    (1, 'Administrador', 'admin@fitzone.com', 'admin123', 1);
+
+-- Personal de teste: email: personal@fitzone.com | senha: personal123
+INSERT OR IGNORE INTO personais (id, nome, email, senha, especialidade) VALUES 
+    (1, 'João Personal', 'personal@fitzone.com', 'personal123', 'Musculação e Hipertrofia');
+
+-- Aluno de teste: email: aluno@fitzone.com | senha: aluno123
+INSERT OR IGNORE INTO alunos (id, nome, email, senha, altura, peso, plano_id, personal_id) VALUES 
+    (1, 'Maria Aluna', 'aluno@fitzone.com', 'aluno123', 1.65, 60.0, 2, 1);
+
 INSERT OR IGNORE INTO exercicios (nome, categoria, descricao) VALUES 
     ('Supino Reto', 'Peito', 'Exercício básico para peitoral'),
     ('Supino Inclinado', 'Peito', 'Foca na parte superior do peitoral'),
