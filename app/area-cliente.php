@@ -13,8 +13,27 @@ if (!isset($_SESSION['usuario_id']) || !isset($_SESSION['usuario_tipo'])) {
 }
 
 $usuario_id = $_SESSION['usuario_id'];
-// Busca direta do usuário por ID
-$usuarioAtual = $db->buscarPorId('users', $usuario_id);
+$usuario_tipo = $_SESSION['usuario_tipo'];
+
+// Busca do usuário na tabela correta baseado no tipo
+$tabela = '';
+switch ($usuario_tipo) {
+    case 'aluno':
+        $tabela = 'alunos';
+        break;
+    case 'personal':
+        $tabela = 'personais';
+        break;
+    case 'admin':
+        $tabela = 'admins';
+        break;
+    default:
+        $_SESSION['erro_acesso'] = "Tipo de usuário inválido.";
+        header("Location: login.php");
+        exit();
+}
+
+$usuarioAtual = $db->buscarPorId($tabela, $usuario_id);
 
 if (!$usuarioAtual) {
     $_SESSION['erro_acesso'] = "Usuário não encontrado.";
