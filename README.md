@@ -55,6 +55,8 @@ O banco de dados será criado automaticamente em `data/fitzone.db` na primeira e
 * Registro e visualização de **treinos personalizados**
 * **Gerenciamento de exercícios** (adicionar, editar, excluir)
 * **Painel administrativo completo**
+* **Edição de dados físicos** (altura e peso) pelos alunos
+* **Cálculo automático de IMC**
   
 ---
 
