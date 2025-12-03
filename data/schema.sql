@@ -119,3 +119,21 @@ INSERT OR IGNORE INTO exercicios (nome, categoria, descricao) VALUES
     ('Elevação Lateral', 'Ombros', 'Isolamento de deltoide medial'),
     ('Abdominal Reto', 'Core', 'Fortalecimento abdominal'),
     ('Prancha', 'Core', 'Isometria para core completo');
+
+-- Treino de exemplo para o aluno
+INSERT OR IGNORE INTO treinos (id, aluno_id, personal_id, nome, descricao, ativo) VALUES 
+    (1, 1, 1, 'Treino A - Peito e Tríceps', 'Treino focado em peito e tríceps para hipertrofia', 1),
+    (2, 1, 1, 'Treino B - Costas e Bíceps', 'Treino para desenvolvimento de costas e bíceps', 1);
+
+-- Exercícios do Treino A
+INSERT OR IGNORE INTO treino_exercicios (treino_id, exercicio_id, ordem, series, repeticoes, carga, descanso, observacoes) VALUES 
+    (1, 1, 1, 4, 12, '40kg', '90s', 'Manter postura correta, descer até o peito'),
+    (1, 2, 2, 3, 12, '30kg', '60s', 'Foco na contração do peito superior'),
+    (1, 8, 3, 3, 15, '25kg', '45s', 'Manter cotovelos próximos ao corpo');
+
+-- Exercícios do Treino B
+INSERT OR IGNORE INTO treino_exercicios (treino_id, exercicio_id, ordem, series, repeticoes, carga, descanso, observacoes) VALUES 
+    (2, 9, 1, 4, 10, '50kg', '90s', 'Manter costas retas, puxar até o abdômen'),
+    (2, 10, 2, 3, 12, '45kg', '60s', 'Puxada ampla, contrair as escápulas'),
+    (2, 7, 3, 3, 12, '15kg', '45s', 'Movimento controlado, sem balanço');
+

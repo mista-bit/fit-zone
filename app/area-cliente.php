@@ -296,7 +296,151 @@ $paginaAtual = 'area-cliente';
             </div>
             <?php endif; ?>
         </div>
+
+        <!-- Seção de Treinos (para alunos) -->
+        <?php if ($usuario_tipo === 'aluno'): ?>
+        <?php
+        // Buscar treinos do aluno
+        $treinos = $db->consultar('
+            SELECT t.*, p.nome as personal_nome 
+            FROM treinos t
+            LEFT JOIN personais p ON t.personal_id = p.id
+            WHERE t.aluno_id = :aluno_id
+            ORDER BY t.created_at DESC
+        ', [':aluno_id' => $usuario_id]);
+        ?>
+        
+        <div class="mb-8">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+                    <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                    </svg>
+                    Meus Treinos
+                </h2>
+                <a href="criar-treino.php" 
+                   class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold px-6 py-3 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    Criar Meu Treino
+                </a>
+            </div>
+
+            <?php if (empty($treinos)): ?>
+            <div class="bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl p-8 border border-white/20 text-center">
+                <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                <p class="text-gray-400 text-lg mb-4">Você ainda não tem treinos cadastrados.</p>
+                <p class="text-gray-500 text-sm mb-6">Crie seu próprio treino ou aguarde seu personal trainer criar um para você.</p>
+                <a href="criar-treino.php" 
+                   class="inline-block bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold px-8 py-3 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg">
+                    ➕ Criar Meu Primeiro Treino
+                </a>
+            </div>
+            <?php else: ?>
+            <div class="grid gap-6">
+                <?php foreach ($treinos as $treino): ?>
+                <?php
+                // Buscar exercícios do treino
+                $exercicios = $db->consultar('
+                    SELECT te.*, e.nome as exercicio_nome, e.categoria
+                    FROM treino_exercicios te
+                    JOIN exercicios e ON te.exercicio_id = e.id
+                    WHERE te.treino_id = :treino_id
+                    ORDER BY te.ordem ASC
+                ', [':treino_id' => $treino['id']]);
+                ?>
+                <div class="bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/20 overflow-hidden">
+                    <!-- Cabeçalho do Treino -->
+                    <div class="p-6 bg-gradient-to-r from-blue-500/20 to-purple-500/20 border-b border-white/10">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <h3 class="text-2xl font-bold text-white mb-2"><?= htmlspecialchars($treino['nome']) ?></h3>
+                                <p class="text-gray-300 mb-2"><?= htmlspecialchars($treino['descricao'] ?? 'Sem descrição') ?></p>
+                                <div class="flex items-center gap-4 text-sm">
+                                    <span class="text-gray-400">
+                                        👨‍🏫 Personal: <span class="text-purple-300"><?= htmlspecialchars($treino['personal_nome']) ?></span>
+                                    </span>
+                                    <span class="text-gray-400">
+                                        📅 <?= date('d/m/Y', strtotime($treino['created_at'])) ?>
+                                    </span>
+                                </div>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-sm font-semibold <?= $treino['ativo'] ? 'bg-green-500/20 text-green-300 border border-green-500/50' : 'bg-gray-500/20 text-gray-300 border border-gray-500/50' ?>">
+                                <?= $treino['ativo'] ? '✓ Ativo' : '○ Inativo' ?>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Lista de Exercícios -->
+                    <div class="p-6">
+                        <?php if (empty($exercicios)): ?>
+                        <p class="text-gray-400 text-center py-4">Nenhum exercício adicionado ainda.</p>
+                        <?php else: ?>
+                        <div class="space-y-4">
+                            <?php foreach ($exercicios as $idx => $ex): ?>
+                            <div class="bg-white/5 rounded-lg p-4 border border-white/10 hover:bg-white/10 transition-all">
+                                <div class="flex items-start gap-4">
+                                    <div class="flex-shrink-0 w-8 h-8 bg-purple-500/20 rounded-full flex items-center justify-center text-purple-300 font-bold">
+                                        <?= $idx + 1 ?>
+                                    </div>
+                                    <div class="flex-grow">
+                                        <div class="flex items-center gap-2 mb-2">
+                                            <h4 class="text-lg font-semibold text-white"><?= htmlspecialchars($ex['exercicio_nome']) ?></h4>
+                                            <span class="px-2 py-1 bg-blue-500/20 text-blue-300 text-xs rounded-full border border-blue-500/50">
+                                                <?= htmlspecialchars($ex['categoria']) ?>
+                                            </span>
+                                        </div>
+                                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+                                            <div>
+                                                <span class="text-gray-400">Séries:</span>
+                                                <span class="text-white font-semibold ml-1"><?= htmlspecialchars($ex['series'] ?? 3) ?></span>
+                                            </div>
+                                            <div>
+                                                <span class="text-gray-400">Repetições:</span>
+                                                <span class="text-white font-semibold ml-1"><?= htmlspecialchars($ex['repeticoes'] ?? 12) ?></span>
+                                            </div>
+                                            <?php if ($ex['carga']): ?>
+                                            <div>
+                                                <span class="text-gray-400">Carga:</span>
+                                                <span class="text-white font-semibold ml-1"><?= htmlspecialchars($ex['carga']) ?></span>
+                                            </div>
+                                            <?php endif; ?>
+                                            <?php if ($ex['descanso']): ?>
+                                            <div>
+                                                <span class="text-gray-400">Descanso:</span>
+                                                <span class="text-white font-semibold ml-1"><?= htmlspecialchars($ex['descanso']) ?></span>
+                                            </div>
+                                            <?php endif; ?>
+                                        </div>
+                                        <?php if ($ex['observacoes']): ?>
+                                        <div class="mt-2 text-sm text-gray-400 italic">
+                                            💡 <?= htmlspecialchars($ex['observacoes']) ?>
+                                        </div>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php endforeach; ?>
+                        </div>
+                        
+                        <div class="mt-6 p-4 bg-blue-500/10 rounded-lg border border-blue-500/20">
+                            <p class="text-blue-300 text-sm">
+                                📊 Total: <strong><?= count($exercicios) ?> exercícios</strong> neste treino
+                            </p>
+                        </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            </div>
+            <?php endif; ?>
+        </div>
+        <?php endif; ?>
     </div>
 </body>
 </html>
+
 
