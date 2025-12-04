@@ -15,128 +15,93 @@ if ($_POST) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Novo Exercício - FitZone Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         body {
-            font-family: Arial, sans-serif;
-            background: #f4f4f4;
-            padding: 20px;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #333;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        label {
-            font-weight: bold;
-            color: #555;
-        }
-        input, select, textarea {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-            font-family: Arial, sans-serif;
-        }
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: #007bff;
-        }
-        textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-        .btn-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        button {
-            padding: 12px 24px;
-            background: #28a745;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            flex: 1;
-        }
-        button:hover {
-            background: #218838;
-        }
-        .btn-back {
-            background: #6c757d;
-            text-decoration: none;
-            display: inline-block;
-            text-align: center;
-            line-height: 1;
-            padding: 12px 24px;
-        }
-        .btn-back:hover {
-            background: #5a6268;
-        }
-        .required {
-            color: red;
+            font-family: 'Inter', sans-serif;
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <h1>➕ Novo Exercício</h1>
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 min-h-screen py-8 px-4">
+    <nav class="max-w-4xl mx-auto mb-8">
+        <a href="index.php" class="inline-flex items-center gap-2 text-gray-300 hover:text-white transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+            </svg>
+            Voltar ao Painel
+        </a>
+    </nav>
 
-        <form method="POST">
-            <div class="form-group">
-                <label>Nome do Exercício <span class="required">*</span></label>
-                <input type="text" name="nome" required placeholder="Ex: Supino Reto">
-            </div>
+    <div class="max-w-4xl mx-auto">
+        <div class="bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/20 p-8 mb-6">
+            <h1 class="text-3xl font-bold text-white mb-2">Novo Exercício</h1>
+            <p class="text-gray-300">Adicione um novo exercício ao banco de dados</p>
+        </div>
 
-            <div class="form-group">
-                <label>Categoria <span class="required">*</span></label>
-                <select name="categoria" required>
-                    <option value="">Selecione uma categoria</option>
-                    <option value="Peito">Peito</option>
-                    <option value="Pernas">Pernas</option>
-                    <option value="Cardio">Cardio</option>
-                    <option value="Costas">Costas</option>
-                    <option value="Braços">Braços</option>
-                    <option value="Ombros">Ombros</option>
-                    <option value="Core">Core</option>
-                </select>
-            </div>
+        <div class="bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/20 p-8">
+            <form method="POST" class="space-y-6">
+                <div>
+                    <label class="block text-gray-300 text-sm font-semibold mb-2">
+                        Nome do Exercício <span class="text-red-400">*</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        name="nome" 
+                        required
+                        class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200"
+                        placeholder="Ex: Supino reto"
+                    >
+                </div>
 
-            <div class="form-group">
-                <label>Descrição</label>
-                <textarea name="descricao" placeholder="Descreva o exercício, técnica de execução, músculos trabalhados, etc."></textarea>
-            </div>
+                <div>
+                    <label class="block text-gray-300 text-sm font-semibold mb-2">
+                        Categoria <span class="text-red-400">*</span>
+                    </label>
+                    <select 
+                        name="categoria" 
+                        required
+                        class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200"
+                    >
+                        <option value="" class="bg-gray-800">Selecione uma categoria</option>
+                        <option value="Peito" class="bg-gray-800">Peito</option>
+                        <option value="Pernas" class="bg-gray-800">Pernas</option>
+                        <option value="Cardio" class="bg-gray-800">Cardio</option>
+                        <option value="Costas" class="bg-gray-800">Costas</option>
+                        <option value="Braços" class="bg-gray-800">Braços</option>
+                        <option value="Ombros" class="bg-gray-800">Ombros</option>
+                        <option value="Core" class="bg-gray-800">Core</option>
+                    </select>
+                </div>
 
-            <div class="btn-group">
-                <a href="index.php" class="btn-back">⬅ Cancelar</a>
-                <button type="submit">💾 Salvar Exercício</button>
-            </div>
-        </form>
+                <div>
+                    <label class="block text-gray-300 text-sm font-semibold mb-2">
+                        Descrição
+                    </label>
+                    <textarea 
+                        name="descricao" 
+                        rows="5"
+                        class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors duration-200 resize-y"
+                        placeholder="Descreva o exercício, técnica de execução, músculos trabalhados, etc."
+                    ></textarea>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                    <a 
+                        href="index.php" 
+                        class="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 text-center"
+                    >
+                        Cancelar
+                    </a>
+                    <button 
+                        type="submit"
+                        class="flex-1 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                    >
+                        Salvar Exercício
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </body>
 </html>
